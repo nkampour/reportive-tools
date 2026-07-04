@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λ.Υ.Σ.Ε.Ι.Σ. — Reportive</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c0a;
+  --surface:#0f1510;
+  --surface2:#141c15;
+  --border:#1e2b1f;
+  --border2:#2a3d2b;
+  --green:#2ECC8F;
+  --green-dim:#1a7a55;
+  --green-glow:rgba(46,204,143,0.12);
+  --amber:#f5a623;
+  --red:#e05252;
+  --text:#f0f4f0;
+  --text2:#8fa890;
+  --text3:#5a6e5c;
+  --font-head:'Syne',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh}
+
+/* TOP BAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;border-bottom:1px solid var(--border);background:rgba(8,12,10,0.98);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.topbar-logo{font-family:var(--font-head);font-weight:800;font-size:18px;color:var(--text);letter-spacing:-0.5px}
+.topbar-logo span{color:var(--green)}
+.lang-toggle{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:3px}
+.lang-btn{background:none;border:none;color:var(--text2);font-size:12px;font-family:var(--font-body);font-weight:600;padding:4px 10px;border-radius:6px;cursor:pointer;transition:all .2s}
+.lang-btn.active{background:var(--green);color:#080c0a}
+
+/* HERO */
+.hero{padding:40px 40px 44px;border-bottom:1px solid var(--border)}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-glow);border:1px solid var(--green-dim);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600;color:var(--green);letter-spacing:1.5px;margin-bottom:20px}
+.hero h1{font-family:var(--font-head);font-size:clamp(24px,3.2vw,48px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;color:var(--text);max-width:100%;white-space:nowrap}
+.hero h1 .accent{color:var(--green)}
+.hero-sub{margin-top:14px;color:var(--text2);font-size:15px;max-width:640px;font-weight:400;line-height:1.5}
+.hero-tagline{margin-top:6px;color:var(--text3);font-size:13px;font-style:italic;font-weight:300}
+
+/* LAYOUT */
+.main-wrap{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 64px)}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:32px 24px;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto}
+.content{padding:32px 40px;overflow:visible}
+
+/* SIDEBAR SLIDERS */
+.sidebar-title{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:24px}
+.slider-group{margin-bottom:22px}
+.slider-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.slider-label{font-size:13px;font-weight:500;color:var(--text2)}
+.slider-val{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--green)}
+.slider-unit{font-size:11px;color:var(--text3);margin-left:2px}
+
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:4px;
+  background:var(--border2);border-radius:2px;outline:none;cursor:pointer
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--green);border:2px solid var(--bg);
+  box-shadow:0 0 0 1px var(--green);
+  cursor:pointer;transition:transform .15s
+}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+input[type=range]::-moz-range-thumb{
+  width:16px;height:16px;border-radius:50%;
+  background:var(--green);border:2px solid var(--bg);cursor:pointer
+}
+.slider-range{display:flex;justify-content:space-between;margin-top:4px}
+.slider-range span{font-size:10px;color:var(--text3)}
+.reset-btn{display:block;width:100%;margin-top:24px;padding:10px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;text-align:center}
+.reset-btn:hover{border-color:var(--green);color:var(--green)}
+
+/* SECTION HEADINGS */
+.section-title{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.section-label{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--text2);margin-bottom:4px}
+
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:32px}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:border-color .2s}
+.kpi-card:hover{border-color:var(--border2)}
+.kpi-card.highlight{border-color:var(--green-dim);background:var(--green-glow)}
+.kpi-label{font-size:11px;color:var(--text3);font-weight:500;margin-bottom:4px;letter-spacing:0.3px}
+.kpi-value{font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--text)}
+.kpi-value.positive{color:var(--green)}
+.kpi-value.negative{color:var(--red)}
+.kpi-value.neutral{color:var(--amber)}
+.kpi-delta{font-size:11px;margin-top:3px;font-weight:500}
+.kpi-delta.up{color:var(--green)}
+.kpi-delta.down{color:var(--red)}
+
+/* SCENARIO TABLE */
+.scenario-section{margin-bottom:36px}
+.scenario-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--surface2);font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text3);text-transform:uppercase;padding:12px 14px;text-align:right;border-bottom:1px solid var(--border)}
+thead th:first-child{text-align:left}
+tbody tr:hover{background:rgba(46,204,143,0.04)}
+tbody td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--border);text-align:right;color:var(--text2);transition:color .2s}
+tbody td:first-child{text-align:left;font-weight:600;color:var(--text);font-size:12px}
+tbody tr:last-child td{border-bottom:none}
+td.current-row{color:var(--green)!important;font-weight:700}
+td.positive{color:var(--green)}
+td.negative{color:var(--red)}
+td.neutral-val{color:var(--amber)}
+.row-current{background:rgba(46,204,143,0.06)}
+
+/* WORKING CAPITAL */
+.wc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px}
+.wc-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
+.wc-card-label{font-size:11px;color:var(--text3);font-weight:500;margin-bottom:6px;letter-spacing:0.3px}
+.wc-card-val{font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--text)}
+.wc-card-sub{font-size:11px;color:var(--text3);margin-top:4px}
+.wc-bar-wrap{margin-top:10px;height:4px;background:var(--border);border-radius:2px}
+.wc-bar{height:4px;border-radius:2px;background:var(--green);transition:width .4s ease}
+
+/* SALES SCENARIO BAR CHART */
+.bar-chart{margin-bottom:32px}
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.bar-row-label{width:80px;font-size:12px;color:var(--text3);text-align:right;flex-shrink:0}
+.bar-track{flex:1;height:24px;background:var(--surface);border-radius:4px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#080c0a;transition:width .4s ease,background .4s}
+.bar-row-val{width:90px;font-family:var(--font-head);font-size:13px;font-weight:600;color:var(--text);text-align:right;flex-shrink:0}
+.bar-fill.base{background:var(--green)}
+.bar-fill.up1{background:#2ECC8F}
+.bar-fill.up2{background:#35d997}
+.bar-fill.up3{background:#3ae5a1}
+.bar-fill.up4{background:#42f0ac}
+.bar-fill.down1{background:#d4a520}
+.bar-fill.down2{background:#c07818}
+.bar-fill.down3{background:#a84f10}
+.bar-fill.down4{background:#e05252}
+
+/* AKK BOX */
+.akk-box{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.akk-left .akk-label{font-size:11px;font-weight:600;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
+.akk-left .akk-title{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--text)}
+.akk-left .akk-sub{font-size:13px;color:var(--text3);margin-top:4px}
+.akk-val-wrap{text-align:right}
+.akk-val{font-family:var(--font-head);font-size:36px;font-weight:800;color:var(--green)}
+.akk-val-sub{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* COMBINED SCENARIOS MATRIX */
+.matrix-title{font-family:var(--font-head);font-size:12px;font-weight:700;color:var(--text2);margin-bottom:12px}
+.matrix-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:32px}
+.matrix-table thead th{font-size:10px;padding:10px 12px}
+.matrix-table tbody td{padding:9px 12px;font-size:12px}
+.cell-good{color:var(--green);font-weight:600}
+.cell-warn{color:var(--amber);font-weight:500}
+.cell-bad{color:var(--red);font-weight:500}
+
+/* FOOTER */
+.footer{padding:32px 40px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--text3)}
+.footer-brand span{color:var(--green)}
+.footer-note{font-size:12px;color:var(--text3)}
+
+/* SECTION DIVIDER */
+.divider{height:1px;background:var(--border);margin:32px 0}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .main-wrap{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto;top:0;border-right:none;border-bottom:1px solid var(--border)}
+  .wc-grid{grid-template-columns:1fr 1fr}
+  .topbar{padding:0 20px}
+  .hero{padding:32px 20px 28px}
+  .hero h1{font-size:clamp(22px,5vw,36px);white-space:normal;letter-spacing:-1px}
+  .content{padding:24px 20px}
+  .footer{padding:20px;flex-direction:column;gap:8px;text-align:center}
+}
+@media(max-width:600px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .wc-grid{grid-template-columns:1fr}
+}
+
+/* HOW IT WORKS */
+.how-section{padding:40px 40px 48px;border-bottom:1px solid var(--border);background:var(--surface)}
+.how-label{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:28px}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.how-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:24px 22px;position:relative}
+.how-card:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--green);font-size:18px;font-weight:700;z-index:1}
+.how-num{font-family:var(--font-head);font-size:11px;font-weight:700;color:var(--green);letter-spacing:2px;margin-bottom:10px}
+.how-icon{font-size:28px;margin-bottom:12px;display:block}
+.how-title{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px}
+.how-desc{font-size:13px;color:var(--text2);line-height:1.6}
+@media(max-width:900px){
+  .how-section{padding:28px 20px 36px}
+  .how-grid{grid-template-columns:1fr}
+  .how-card:not(:last-child)::after{content:'↓';right:auto;left:50%;top:auto;bottom:-16px;transform:translateX(-50%)}
+}
+
+/* TOOLTIP — hover overlay on cards */
+.has-tip{position:relative;cursor:default}
+.tip-box{
+  visibility:hidden;opacity:0;
+  position:absolute;top:calc(100% + 10px);left:50%;
+  transform:translateX(-50%) translateY(-4px);
+  background:#0f1f12;border:1px solid var(--green-dim);
+  border-radius:10px;padding:14px 16px;
+  width:230px;
+  pointer-events:none;transition:opacity .2s,transform .2s;
+  z-index:300
+}
+.has-tip:hover .tip-box{visibility:visible;opacity:1;transform:translateX(-50%) translateY(0)}
+.tip-box-title{font-family:var(--font-head);font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px}
+.tip-box-text{font-size:12px;color:var(--text2);line-height:1.55}
+.tip-box-formula{font-size:11px;color:var(--text3);margin-top:6px;font-style:italic;border-top:1px solid var(--border);padding-top:6px}
+/* tip-box for AKK (opens downward, aligned right) */
+.tip-box.tip-right{left:auto;right:0;transform:translateY(-4px)}
+.has-tip:hover .tip-box.tip-right{transform:translateY(0)}
+
+/* TOOLTIP */
+.tooltip-wrap{position:relative;display:inline-block}
+.tooltip-wrap .tip{visibility:hidden;opacity:0;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1e2b1f;border:1px solid var(--border2);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--text2);white-space:nowrap;pointer-events:none;transition:opacity .2s;z-index:200}
+.tooltip-wrap:hover .tip{visibility:visible;opacity:1}
+
+/* DANGER ZONE BANNER */
+.danger-banner{display:none;background:rgba(224,82,82,0.1);border:1px solid var(--red);border-radius:10px;padding:14px 20px;margin-bottom:24px;align-items:center;gap:14px}
+.danger-banner.visible{display:flex}
+.danger-icon{font-size:20px;flex-shrink:0}
+.danger-text{font-size:13px;color:#f08080;line-height:1.5}
+.danger-text strong{color:var(--red);font-weight:700}
+
+/* BREAK-EVEN + CASHFLOW */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+.summary-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+.summary-card-label{font-size:11px;font-weight:600;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-bottom:10px}
+.summary-card-val{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--green)}
+.summary-card-val.warn{color:var(--amber)}
+.summary-card-val.negative{color:var(--red)}
+.summary-card-sub{font-size:12px;color:var(--text3);margin-top:6px}
+
+/* SCENARIO CARDS */
+.sc-cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+@media(max-width:1100px){.sc-cards-grid{grid-template-columns:repeat(3,1fr)}}
+.sc-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;transition:border-color .2s;cursor:default}
+.sc-card:hover{border-color:var(--border2)}
+.sc-card.sc-positive{border-color:var(--green-dim)}
+.sc-card.sc-negative{border-color:#7a2a2a;background:rgba(224,82,82,0.05)}
+.sc-card.sc-base{border-color:var(--green);box-shadow:0 0 16px rgba(46,204,143,0.1)}
+.sc-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sc-card-scenario{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase}
+.sc-card.sc-base .sc-card-scenario{color:var(--green)}
+.pin-btn{background:none;border:1px solid var(--border2);border-radius:5px;color:var(--text3);font-size:10px;padding:2px 7px;cursor:pointer;transition:all .2s;font-family:var(--font-body);line-height:1.4}
+.pin-btn:hover{border-color:var(--green);color:var(--green)}
+.pin-btn.pinned{background:var(--green);border-color:var(--green);color:#080c0a}
+.sc-result{font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--green);margin-bottom:2px}
+.sc-result.negative{color:var(--red)}
+.sc-vs-base{font-size:11px;font-weight:600;margin-bottom:8px}
+.sc-vs-base.up{color:var(--green)}
+.sc-vs-base.down{color:var(--red)}
+.sc-vs-base.neutral{color:var(--text3)}
+.sc-divider{height:1px;background:var(--border);margin:8px 0}
+.sc-footer{display:flex;justify-content:space-between;align-items:center;gap:4px}
+.sc-footer-item{font-size:10px;color:var(--text3);text-align:center;flex:1}
+.sc-footer-val{font-family:var(--font-head);font-size:11px;font-weight:700;color:var(--text2);display:block;margin-top:1px}
+
+/* COMPARISON BANNER */
+.compare-banner{display:none;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:16px 20px;margin-bottom:20px}
+.compare-banner.visible{display:block}
+.compare-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.compare-title{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--green);text-transform:uppercase}
+.compare-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px}
+.compare-close:hover{color:var(--text)}
+.compare-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
+.compare-col{text-align:center}
+.compare-col-label{font-size:10px;color:var(--text3);margin-bottom:6px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.compare-col-scenario{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.compare-col-result{font-family:var(--font-head);font-size:22px;font-weight:800}
+.compare-col-result.positive{color:var(--green)}
+.compare-col-result.negative{color:var(--red)}
+.compare-col-sub{font-size:11px;color:var(--text3);margin-top:3px}
+.compare-vs-col{text-align:center}
+.compare-diff-val{font-family:var(--font-head);font-size:18px;font-weight:700}
+.compare-diff-val.up{color:var(--green)}
+.compare-diff-val.down{color:var(--red)}
+.compare-diff-label{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* GATE / LOCK */
+.locked-section{position:relative;margin-bottom:36px}
+.locked-section .locked-inner{filter:blur(6px);user-select:none;pointer-events:none;opacity:0.55;transition:filter .3s}
+.locked-section.unlocked .locked-inner{filter:none;opacity:1;pointer-events:auto}
+.lock-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;gap:14px}
+.locked-section.unlocked .lock-overlay{display:none}
+.lock-card{background:var(--surface);border:1px solid var(--green-dim);border-radius:14px;padding:24px 32px;text-align:center;max-width:340px;box-shadow:0 0 40px rgba(46,204,143,0.08)}
+.lock-icon{font-size:28px;margin-bottom:8px}
+.lock-title{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.lock-sub{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:16px}
+.unlock-btn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#080c0a;font-family:var(--font-head);font-size:13px;font-weight:700;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;letter-spacing:0.5px;transition:opacity .2s}
+.unlock-btn:hover{opacity:0.88}
+
+/* EMAIL MODAL OVERLAY */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(8,12,10,0.88);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-bg.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:36px 40px;max-width:440px;width:90%;position:relative}
+.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;line-height:1}
+.modal-close:hover{color:var(--text)}
+.modal-badge{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:12px}
+.modal h2{font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:-0.5px}
+.modal-desc{font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.6}
+.modal-list{list-style:none;margin-bottom:24px}
+.modal-list li{font-size:13px;color:var(--text2);padding:5px 0;display:flex;align-items:center;gap:8px}
+.modal-list li::before{content:'✓';color:var(--green);font-weight:700;font-size:12px;flex-shrink:0}
+.modal-input-wrap{margin-bottom:14px}
+.modal-input-wrap label{display:block;font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px;letter-spacing:0.3px;text-transform:uppercase}
+.modal input[type=email],.modal input[type=text]{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:11px 14px;font-family:var(--font-body);font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
+.modal input:focus{border-color:var(--green)}
+.modal-submit{width:100%;background:var(--green);color:#080c0a;font-family:var(--font-head);font-size:14px;font-weight:700;padding:13px;border-radius:8px;border:none;cursor:pointer;letter-spacing:0.5px;transition:opacity .2s;margin-top:4px}
+.modal-submit:hover{opacity:0.88}
+.modal-note{font-size:11px;color:var(--text3);text-align:center;margin-top:12px}
+.modal-success{display:none;text-align:center;padding:16px 0}
+.modal-success .success-icon{font-size:40px;margin-bottom:12px}
+.modal-success h3{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--green);margin-bottom:8px}
+.modal-success p{font-size:14px;color:var(--text2)}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">report<span>ive</span></div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('gr')" id="btn-gr">ΕΛ</button>
+    <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge" id="hero-badge">ΕΡΓΑΛΕΙΟ ΑΝΑΛΥΣΗΣ</div>
+  <h1 id="hero-h1">Λ.Υ.Σ.Ε.Ι.Σ. <span class="accent">—</span> Σενάρια & Αποτελέσματα</h1>
+  <p class="hero-sub" id="hero-sub">Λειτουργικό Υπολογιστικό Σύστημα Επιχειρηματικής Ικανότητας & Σταθερότητας</p>
+  <p class="hero-tagline" id="hero-tagline">Για κάθε επιχείρηση που θέλει λύσεις, όχι προβλήματα.</p>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-section">
+  <div class="how-label" id="how-label">Πώς λειτουργεί</div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <span class="how-icon">🎚️</span>
+      <div class="how-title" id="how-t1">Βάλε τα νούμερα της επιχείρησής σου</div>
+      <div class="how-desc" id="how-d1">Χρησιμοποίησε τα sliders αριστερά για να βάλεις τις πωλήσεις σου, το περιθώριο κέρδους, τα έξοδα και πόσες μέρες χρειάζεσαι για να εισπράξεις ή να πληρώσεις.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <span class="how-icon">⚡</span>
+      <div class="how-title" id="how-t2">Δες τα αποτελέσματα σε πραγματικό χρόνο</div>
+      <div class="how-desc" id="how-d2">Κάθε φορά που αλλάζεις ένα νούμερο, το εργαλείο υπολογίζει αυτόματα το καθαρό αποτέλεσμα, τους τόκους, και πόσα κεφάλαια χρειάζεσαι για να λειτουργεί η επιχείρησή σου.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <span class="how-icon">🔍</span>
+      <div class="how-title" id="how-t3">Δοκίμασε σενάρια & πάρε αποφάσεις</div>
+      <div class="how-desc" id="how-d3">Τι γίνεται αν οι πωλήσεις πέσουν 10%; Τι αν μειώσεις τα έξοδα; Τα σενάρια σου δείχνουν όλες τις πιθανές εκβάσεις ώστε να αποφασίσεις με σιγουριά.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <!-- SIDEBAR: INPUT SLIDERS -->
+  <div class="sidebar">
+    <div class="sidebar-title" id="sb-title">Παράμετροι</div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-sales">Πωλήσεις (€)</span>
+        <span><span class="slider-val" id="val-sales">500.000</span></span>
+      </div>
+      <input type="range" id="sl-sales" min="100000" max="50000000" step="50000" value="500000" oninput="update()">
+      <div class="slider-range"><span>100K</span><span>50M</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-gm">Μικτό Περιθώριο</span>
+        <span><span class="slider-val" id="val-gm">35</span><span class="slider-unit">%</span></span>
+      </div>
+      <input type="range" id="sl-gm" min="5" max="80" step="1" value="35" oninput="update()">
+      <div class="slider-range"><span>5%</span><span>80%</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-exp">Έξοδα (€)</span>
+        <span><span class="slider-val" id="val-exp">120.000</span></span>
+      </div>
+      <input type="range" id="sl-exp" min="50000" max="50000000" step="50000" value="50000" oninput="update()">
+      <div class="slider-range"><span>50K</span><span>50M</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-ir">Επιτόκιο</span>
+        <span><span class="slider-val" id="val-ir">5</span><span class="slider-unit">%</span></span>
+      </div>
+      <input type="range" id="sl-ir" min="0" max="25" step="0.5" value="5" oninput="update()">
+      <div class="slider-range"><span>0%</span><span>25%</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-oi">Λοιπά Έσοδα (€)</span>
+        <span><span class="slider-val" id="val-oi">10.000</span></span>
+      </div>
+      <input type="range" id="sl-oi" min="0" max="500000" step="5000" value="10000" oninput="update()">
+      <div class="slider-range"><span>0</span><span>500K</span></div>
+    </div>
+
+    <div style="height:1px;background:var(--border);margin:16px 0"></div>
+    <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-bottom:14px" id="sb-wc-title">Κυκλοφοριακή Ταχύτητα</div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-da">Ημέρες Αποθεμάτων</span>
+        <span><span class="slider-val" id="val-da">45</span><span class="slider-unit">μέρ.</span></span>
+      </div>
+      <input type="range" id="sl-da" min="1" max="180" step="1" value="45" oninput="update()">
+      <div class="slider-range"><span>1</span><span>180</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-dr">Ημέρες Απαιτήσεων</span>
+        <span><span class="slider-val" id="val-dr">60</span><span class="slider-unit">μέρ.</span></span>
+      </div>
+      <input type="range" id="sl-dr" min="1" max="180" step="1" value="60" oninput="update()">
+      <div class="slider-range"><span>1</span><span>180</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-dp">Ημέρες Προμηθευτών</span>
+        <span><span class="slider-val" id="val-dp">30</span><span class="slider-unit">μέρ.</span></span>
+      </div>
+      <input type="range" id="sl-dp" min="1" max="120" step="1" value="30" oninput="update()">
+      <div class="slider-range"><span>1</span><span>120</span></div>
+    </div>
+
+    <div style="height:1px;background:var(--border);margin:16px 0"></div>
+    <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;color:var(--red);text-transform:uppercase;margin-bottom:14px" id="sb-dz-title">Danger Zone</div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-dz">Ελάχιστο Margin</span>
+        <span><span class="slider-val" id="val-dz" style="color:var(--red)">3</span><span class="slider-unit">%</span></span>
+      </div>
+      <input type="range" id="sl-dz" min="0" max="20" step="0.5" value="3" oninput="update()" style="accent-color:var(--red)">
+      <div class="slider-range"><span>0%</span><span>20%</span></div>
+    </div>
+
+    <button class="reset-btn" onclick="resetSliders()" id="btn-reset">↺ Επαναφορά</button>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="content">
+
+    <!-- KPI SECTION -->
+    <div class="section-title" id="sec-base">Βασικό Αποτέλεσμα</div>
+    <div class="kpi-grid">
+
+      <div class="kpi-card highlight has-tip">
+        <div class="kpi-label" id="kl-result">Καθαρό Αποτέλεσμα</div>
+        <div class="kpi-value positive" id="kv-result">—</div>
+        <div class="kpi-delta" id="kd-result"></div>
+        <div class="tip-box">
+          <div class="tip-box-title" id="tip-result-title">Καθαρό Αποτέλεσμα</div>
+          <div class="tip-box-text" id="tip-result-text">Αυτό που μένει στην επιχείρηση στο τέλος — αφού πληρωθούν όλα τα έξοδα, οι τόκοι και αφαιρεθεί το κόστος των πωλήσεων. Αν είναι θετικό, η επιχείρηση βγάζει κέρδος.</div>
+        </div>
+      </div>
+
+      <div class="kpi-card has-tip">
+        <div class="kpi-label" id="kl-gp">Μικτό Κέρδος</div>
+        <div class="kpi-value" id="kv-gp">—</div>
+        <div class="tip-box">
+          <div class="tip-box-title" id="tip-gp-title">Μικτό Κέρδος</div>
+          <div class="tip-box-text" id="tip-gp-text">Τα χρήματα που μένουν αφού αφαιρέσεις το κόστος των προϊόντων που πούλησες. Δεν έχει αφαιρεθεί ακόμα το ενοίκιο, οι μισθοί ή άλλα γενικά έξοδα.</div>
+          <div class="tip-box-formula" id="tip-gp-formula">Πωλήσεις × Μικτό Περιθώριο %</div>
+        </div>
+      </div>
+
+      <div class="kpi-card has-tip">
+        <div class="kpi-label" id="kl-ebit">EBIT</div>
+        <div class="kpi-value" id="kv-ebit">—</div>
+        <div class="tip-box">
+          <div class="tip-box-title" id="tip-ebit-title">Λειτουργικό Αποτέλεσμα (EBIT)</div>
+          <div class="tip-box-text" id="tip-ebit-text">Το κέρδος από την καθημερινή λειτουργία της επιχείρησης — αφού αφαιρεθούν τα λειτουργικά έξοδα (ενοίκια, μισθοί κλπ). Δεν περιλαμβάνει τόκους ή φόρους.</div>
+          <div class="tip-box-formula" id="tip-ebit-formula">Μικτό Κέρδος − Έξοδα + Λοιπά Έσοδα</div>
+        </div>
+      </div>
+
+      <div class="kpi-card has-tip">
+        <div class="kpi-label" id="kl-interest">Τόκοι</div>
+        <div class="kpi-value" id="kv-interest">—</div>
+        <div class="tip-box">
+          <div class="tip-box-title" id="tip-int-title">Κόστος Τόκων</div>
+          <div class="tip-box-text" id="tip-int-text">Αυτό πληρώνεις στην τράπεζα για να χρηματοδοτείς το κεφάλαιο κίνησης που χρειάζεσαι. Όσο περισσότερες μέρες αργείς να εισπράξεις, τόσο μεγαλύτεροι οι τόκοι.</div>
+        </div>
+      </div>
+
+      <div class="kpi-card has-tip">
+        <div class="kpi-label" id="kl-margin">Περιθώριο Κέρδους</div>
+        <div class="kpi-value" id="kv-margin">—</div>
+        <div class="tip-box">
+          <div class="tip-box-title" id="tip-margin-title">Περιθώριο Καθαρού Κέρδους</div>
+          <div class="tip-box-text" id="tip-margin-text">Από κάθε 100€ που πουλάς, πόσα μένουν τελικά στην επιχείρηση. Π.χ. 8% σημαίνει ότι κρατάς 8€ από κάθε 100€ πωλήσεων.</div>
+          <div class="tip-box-formula" id="tip-margin-formula">Καθαρό Αποτέλεσμα ÷ Πωλήσεις × 100</div>
+        </div>
+      </div>
+
+      <div class="kpi-card has-tip">
+        <div class="kpi-label" id="kl-cogs">Κόστος Πωλ.</div>
+        <div class="kpi-value" id="kv-cogs">—</div>
+        <div class="tip-box">
+          <div class="tip-box-title" id="tip-cogs-title">Κόστος Πωληθέντων</div>
+          <div class="tip-box-text" id="tip-cogs-text">Πόσο σε κοστίζει να παράγεις ή να αγοράσεις αυτά που πουλάς. Αν πουλάς προϊόντα, είναι το κόστος αγοράς τους. Αν πουλάς υπηρεσίες, είναι το άμεσο κόστος παροχής τους.</div>
+          <div class="tip-box-formula" id="tip-cogs-formula">Πωλήσεις × (1 − Μικτό Περιθώριο %)</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- AKK — UNLOCKED (gate disabled temporarily) -->
+    <div class="locked-section unlocked" id="gate-akk">
+      <div class="locked-inner">
+        <div class="akk-box has-tip">
+          <div class="akk-left">
+            <div class="akk-label" id="akk-lbl">Αναγκαίο Κεφάλαιο Κίνησης</div>
+            <div class="akk-title" id="akk-title">Κεφάλαιο Κίνησης (ΑΚΚ)</div>
+            <div class="akk-sub" id="akk-sub">Βάσει κυκλοφοριακής ταχύτητας</div>
+          </div>
+          <div class="akk-val-wrap">
+            <div class="akk-val" id="akk-val">—</div>
+            <div class="akk-val-sub" id="akk-sub2">ετήσια βάση</div>
+          </div>
+          <div class="tip-box tip-right">
+            <div class="tip-box-title" id="tip-akk-title">Αναγκαίο Κεφάλαιο Κίνησης</div>
+            <div class="tip-box-text" id="tip-akk-text">Τα μετρητά που χρειάζεσαι για να "τρέχει" η επιχείρησή σου καθημερινά — να πληρώνεις προμηθευτές πριν εισπράξεις από πελάτες. Όσο μεγαλύτερο, τόσο περισσότερα χρήματα "κολλάνε" στην επιχείρηση.</div>
+            <div class="tip-box-formula" id="tip-akk-formula">(Ημ. Απαιτήσεων + Ημ. Αποθεμάτων − Ημ. Προμηθευτών) ÷ 365 × Πωλήσεις</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKING CAPITAL VELOCITY — UNLOCKED -->
+    <div class="locked-section unlocked" id="gate-wc">
+      <div class="locked-inner">
+        <div class="section-title" id="sec-wc">Κυκλοφοριακή Ταχύτητα σε Ημέρες</div>
+        <div class="wc-grid">
+          <div class="wc-card has-tip">
+            <div class="wc-card-label" id="wc-inv-lbl">Αποθέματα</div>
+            <div class="wc-card-val" id="wc-inv-val">—</div>
+            <div class="wc-card-sub" id="wc-inv-sub">€ δεσμευμένα</div>
+            <div class="wc-bar-wrap"><div class="wc-bar" id="wc-bar-inv" style="width:40%"></div></div>
+            <div class="tip-box">
+              <div class="tip-box-title" id="tip-inv-title">Ημέρες Αποθεμάτων</div>
+              <div class="tip-box-text" id="tip-inv-text">Πόσες μέρες κρατάς κατά μέσο όρο τα προϊόντα στην αποθήκη πριν τα πουλήσεις. Λιγότερες μέρες = λιγότερα χρήματα κλειδωμένα σε απόθεμα.</div>
+            </div>
+          </div>
+          <div class="wc-card has-tip">
+            <div class="wc-card-label" id="wc-rec-lbl">Απαιτήσεις</div>
+            <div class="wc-card-val" id="wc-rec-val">—</div>
+            <div class="wc-card-sub" id="wc-rec-sub">€ δεσμευμένα</div>
+            <div class="wc-bar-wrap"><div class="wc-bar" id="wc-bar-rec" style="width:55%"></div></div>
+            <div class="tip-box">
+              <div class="tip-box-title" id="tip-rec-title">Ημέρες Απαιτήσεων</div>
+              <div class="tip-box-text" id="tip-rec-text">Πόσες μέρες περιμένεις να πληρωθείς από τους πελάτες σου μετά την πώληση. Λιγότερες μέρες σημαίνει ότι εισπράττεις πιο γρήγορα και έχεις περισσότερη ρευστότητα.</div>
+            </div>
+          </div>
+          <div class="wc-card has-tip">
+            <div class="wc-card-label" id="wc-pay-lbl">Προμηθευτές</div>
+            <div class="wc-card-val" id="wc-pay-val">—</div>
+            <div class="wc-card-sub" id="wc-pay-sub">€ χρηματοδότηση</div>
+            <div class="wc-bar-wrap"><div class="wc-bar" id="wc-bar-pay" style="width:25%;background:var(--amber)"></div></div>
+            <div class="tip-box">
+              <div class="tip-box-title" id="tip-pay-title">Ημέρες Προμηθευτών</div>
+              <div class="tip-box-text" id="tip-pay-text">Πόσες μέρες αργείς να πληρώσεις τους προμηθευτές σου. Περισσότερες μέρες είναι καλό — σημαίνει ότι οι προμηθευτές χρηματοδοτούν εν μέρει την επιχείρησή σου.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- DANGER ZONE BANNER -->
+    <div class="danger-banner" id="danger-banner">
+      <div class="danger-icon">⚠️</div>
+      <div class="danger-text" id="danger-text"><strong>Danger Zone:</strong> Το τρέχον margin είναι κάτω από το όριο που έχεις ορίσει.</div>
+    </div>
+
+    <!-- BREAK-EVEN + CASHFLOW -->
+    <div class="summary-grid">
+      <div class="summary-card has-tip">
+        <div class="summary-card-label" id="lbl-breakeven">Break-Even Πωλήσεις</div>
+        <div class="summary-card-val" id="val-breakeven">—</div>
+        <div class="summary-card-sub" id="sub-breakeven">ελάχιστος τζίρος για μηδενικό αποτέλεσμα</div>
+        <div class="tip-box">
+          <div class="tip-box-title" id="tip-be-title">Break-Even</div>
+          <div class="tip-box-text" id="tip-be-text">Οι ελάχιστες πωλήσεις που χρειάζεσαι για να μην χάνεις χρήματα. Κάτω από αυτό το νούμερο η επιχείρηση λειτουργεί με ζημία.</div>
+          <div class="tip-box-formula" id="tip-be-formula">(Έξοδα + Τόκοι − Λοιπά Έσοδα) ÷ Μικτό Περιθώριο %</div>
+        </div>
+      </div>
+      <div class="summary-card has-tip">
+        <div class="summary-card-label" id="lbl-cashflow">Εκτίμηση Cash Flow</div>
+        <div class="summary-card-val" id="val-cashflow">—</div>
+        <div class="summary-card-sub" id="sub-cashflow">εκτιμώμενα μετρητά τέλος έτους</div>
+        <div class="tip-box tip-right">
+          <div class="tip-box-title" id="tip-cf-title">Εκτίμηση Cash Flow</div>
+          <div class="tip-box-text" id="tip-cf-text">Κατά προσέγγιση τα μετρητά που έχεις στο τέλος του χρόνου. Διαφέρει από το κέρδος — μια επιχείρηση μπορεί να έχει κέρδος αλλά πρόβλημα ρευστότητας λόγω ΑΚΚ.</div>
+          <div class="tip-box-formula" id="tip-cf-formula">Αποτέλεσμα − Αύξηση ΑΚΚ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARISON BANNER -->
+    <div class="compare-banner" id="compare-banner">
+      <div class="compare-header">
+        <div class="compare-title" id="compare-title">Σύγκριση Σεναρίων</div>
+        <button class="compare-close" onclick="clearPin()">✕</button>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-col">
+          <div class="compare-col-label" id="cmp-lbl-pinned">Pinned</div>
+          <div class="compare-col-scenario" id="cmp-pinned-scenario">—</div>
+          <div class="compare-col-result positive" id="cmp-pinned-result">—</div>
+          <div class="compare-col-sub" id="cmp-pinned-sales">—</div>
+        </div>
+        <div class="compare-vs-col">
+          <div class="compare-diff-val" id="cmp-diff-val">—</div>
+          <div class="compare-diff-label" id="cmp-diff-label">διαφορά</div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-label" id="cmp-lbl-current">Τρέχον</div>
+          <div class="compare-col-scenario" id="cmp-current-scenario">Βάση</div>
+          <div class="compare-col-result positive" id="cmp-current-result">—</div>
+          <div class="compare-col-sub" id="cmp-current-sales">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SALES SCENARIO CARDS -->
+    <div class="locked-section unlocked" id="gate-sales">
+      <div class="locked-inner">
+        <div class="section-title" id="sec-sales-sc">Σενάρια Πωλήσεων</div>
+        <div class="sc-cards-grid" id="sc-cards-grid"></div>
+      </div>
+    </div>
+
+    <!-- FINANCIAL SCENARIOS TABLE -->
+    <div class="locked-section unlocked" id="gate-fin">
+      <div class="locked-inner">
+        <div class="section-title" id="sec-fin-sc">Οικονομικά Αποτελέσματα Σεναρίων</div>
+        <div class="scenario-section">
+          <div class="scenario-table-wrap">
+            <table id="scenario-table">
+              <thead>
+                <tr>
+                  <th id="th-scenario" class="has-tip" style="text-align:left;cursor:default">Σενάριο<div class="tip-box" style="width:180px"><div class="tip-box-title" id="tip-th-sc">Σενάριο</div><div class="tip-box-text" id="tip-th-sc-t">Η % μεταβολή των πωλήσεων σε σχέση με τη βάση.</div></div></th>
+                  <th id="th-sales" class="has-tip" style="cursor:default">Πωλήσεις<div class="tip-box" style="width:180px"><div class="tip-box-title" id="tip-th-sal">Πωλήσεις</div><div class="tip-box-text" id="tip-th-sal-t">Ο συνολικός τζίρος του σεναρίου.</div></div></th>
+                  <th id="th-gp" class="has-tip" style="cursor:default">Μικτό Κέρδος<div class="tip-box" style="width:200px"><div class="tip-box-title" id="tip-th-gp">Μικτό Κέρδος</div><div class="tip-box-text" id="tip-th-gp-t">Τζίρος μείον κόστος πωληθέντων. Δεν περιλαμβάνει γενικά έξοδα.</div></div></th>
+                  <th id="th-ebit" class="has-tip" style="cursor:default">EBIT<div class="tip-box" style="width:200px"><div class="tip-box-title" id="tip-th-ebit">EBIT</div><div class="tip-box-text" id="tip-th-ebit-t">Λειτουργικό αποτέλεσμα πριν τόκους και φόρους.</div></div></th>
+                  <th id="th-result" class="has-tip" style="cursor:default">Αποτέλεσμα<div class="tip-box" style="width:200px"><div class="tip-box-title" id="tip-th-res">Αποτέλεσμα</div><div class="tip-box-text" id="tip-th-res-t">Το τελικό καθαρό κέρδος ή ζημία μετά από τόκους.</div></div></th>
+                  <th id="th-margin">Περιθώριο %</th>
+                </tr>
+              </thead>
+              <tbody id="scenario-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SENSITIVITY MATRIX 9x9 -->
+    <div class="locked-section unlocked" id="gate-matrix">
+      <div class="locked-inner">
+        <div class="section-title has-tip" id="sec-matrix" style="cursor:default">Ανάλυση Ευαισθησίας: Πωλήσεις × Έξοδα
+          <div class="tip-box" style="width:260px;left:0;transform:none">
+            <div class="tip-box-title" id="tip-matrix-title">Ανάλυση Ευαισθησίας</div>
+            <div class="tip-box-text" id="tip-matrix-text">Κάθε κελί δείχνει το Καθαρό Αποτέλεσμα για έναν συνδυασμό % μεταβολής Πωλήσεων (γραμμές) και % μεταβολής Εξόδων (στήλες). Πράσινο = καλύτερο από βάση, κόκκινο = χειρότερο.</div>
+          </div>
+        </div>
+        <div class="matrix-wrap">
+          <table class="matrix-table" id="matrix-table">
+            <thead id="matrix-thead"></thead>
+            <tbody id="matrix-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- EXPENSE SCENARIOS -->
+    <div class="locked-section unlocked" id="gate-exp">
+      <div class="locked-inner">
+        <div class="section-title" id="sec-exp-sc">Σενάρια Εξόδων</div>
+        <div class="scenario-section">
+          <div class="scenario-table-wrap">
+            <table id="exp-scenario-table">
+              <thead>
+                <tr>
+                  <th id="eth-scenario">Σενάριο</th>
+                  <th id="eth-expenses" class="has-tip" style="cursor:default">Έξοδα<div class="tip-box" style="width:190px"><div class="tip-box-title" id="tip-eth-exp">Έξοδα</div><div class="tip-box-text" id="tip-eth-exp-t">Τα λειτουργικά έξοδα του σεναρίου (ενοίκια, μισθοί, κλπ).</div></div></th>
+                  <th id="eth-ebit" class="has-tip" style="cursor:default">EBIT<div class="tip-box" style="width:190px"><div class="tip-box-title" id="tip-eth-ebit">EBIT</div><div class="tip-box-text" id="tip-eth-ebit-t">Λειτουργικό αποτέλεσμα πριν τόκους και φόρους.</div></div></th>
+                  <th id="eth-result" class="has-tip" style="cursor:default">Αποτέλεσμα<div class="tip-box" style="width:190px"><div class="tip-box-title" id="tip-eth-res">Αποτέλεσμα</div><div class="tip-box-text" id="tip-eth-res-t">Καθαρό κέρδος ή ζημία μετά τόκους.</div></div></th>
+                  <th id="eth-margin">Περιθώριο %</th>
+                </tr>
+              </thead>
+              <tbody id="exp-scenario-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main-wrap -->
+
+<!-- EMAIL MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="handleBgClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-form-wrap">
+      <div class="modal-badge" id="modal-badge">ΔΩΡΕΑΝ ΠΡΟΣΒΑΣΗ</div>
+      <h2 id="modal-h2">Ξεκλείδωσε την Πλήρη Ανάλυση</h2>
+      <p class="modal-desc" id="modal-desc">Βάλε το email σου και λάβε άμεσα πρόσβαση σε όλα τα δεδομένα της ανάλυσής σου.</p>
+      <ul class="modal-list" id="modal-list">
+        <li id="ml1">Κεφάλαιο Κίνησης (ΑΚΚ) — αναλυτικά</li>
+        <li id="ml2">Κυκλοφοριακή Ταχύτητα Αποθεμάτων, Απαιτήσεων & Προμηθευτών</li>
+        <li id="ml3">Πλήρη Σενάρια Πωλήσεων (±10%)</li>
+        <li id="ml4">Ανάλυση Ευαισθησίας Πωλήσεων × Εξόδων</li>
+        <li id="ml5">Σενάρια Εξόδων με αντίκτυπο στο αποτέλεσμα</li>
+      </ul>
+      <div class="modal-input-wrap">
+        <label id="modal-lbl-name">Όνομα</label>
+        <input type="text" id="modal-name" placeholder="π.χ. Νίκος Παπαδόπουλος">
+      </div>
+      <div class="modal-input-wrap">
+        <label id="modal-lbl-email">Email</label>
+        <input type="email" id="modal-email" placeholder="email@εταιρεία.gr">
+      </div>
+      <div class="modal-input-wrap">
+        <label id="modal-lbl-company">Εταιρεία (προαιρετικό)</label>
+        <input type="text" id="modal-company" placeholder="π.χ. ABC ΑΕ">
+      </div>
+      <button class="modal-submit" onclick="submitGate()" id="modal-submit-btn">Ξεκλείδωσε τώρα →</button>
+      <p class="modal-note" id="modal-note">Δεν στέλνουμε spam. Τα δεδομένα σου παραμένουν ιδιωτικά.</p>
+    </div>
+    <div class="modal-success" id="modal-success">
+      <div class="success-icon">✅</div>
+      <h3 id="success-h3">Πρόσβαση Ενεργοποιήθηκε!</h3>
+      <p id="success-p">Η πλήρης ανάλυση είναι τώρα διαθέσιμη. Ένα email επιβεβαίωσης στάλθηκε στη διεύθυνσή σου.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-brand">report<span>ive</span> &mdash; Λ.Υ.Σ.Ε.Ι.Σ.</div>
+  <div class="footer-note" id="footer-note">Για κάθε επιχείρηση που θέλει λύσεις, όχι προβλήματα.</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// TRANSLATIONS
+// ═══════════════════════════════════════════════════════════
+const LANG = {
+  gr: {
+    'hero-badge':'ΕΡΓΑΛΕΙΟ ΑΝΑΛΥΣΗΣ',
+    'hero-h1':'Λ.Υ.Σ.Ε.Ι.Σ. <span class="accent">&mdash;</span><br>Σενάρια & Αποτελέσματα',
+    'hero-sub':'Λειτουργικό Υπολογιστικό Σύστημα Επιχειρηματικής Ικανότητας & Σταθερότητας',
+    'hero-tagline':'Για κάθε επιχείρηση που θέλει λύσεις, όχι προβλήματα.',
+    'sb-title':'Παράμετροι',
+    'sb-wc-title':'Κυκλοφοριακή Ταχύτητα',
+    'lbl-sales':'Πωλήσεις (€)',
+    'lbl-gm':'Μικτό Περιθώριο',
+    'lbl-exp':'Έξοδα (€)',
+    'lbl-ir':'Επιτόκιο',
+    'lbl-oi':'Λοιπά Έσοδα (€)',
+    'lbl-da':'Ημέρες Αποθεμάτων',
+    'lbl-dr':'Ημέρες Απαιτήσεων',
+    'lbl-dp':'Ημέρες Προμηθευτών',
+    'btn-reset':'↺ Επαναφορά',
+    'sec-base':'Βασικό Αποτέλεσμα',
+    'kl-result':'Καθαρό Αποτέλεσμα',
+    'kl-gp':'Μικτό Κέρδος',
+    'kl-ebit':'EBIT',
+    'kl-interest':'Τόκοι',
+    'kl-margin':'Περιθώριο Κέρδους',
+    'kl-cogs':'Κόστος Πωλ.',
+    'akk-lbl':'Αναγκαίο Κεφάλαιο Κίνησης',
+    'akk-title':'Κεφάλαιο Κίνησης (ΑΚΚ)',
+    'akk-sub':'Βάσει κυκλοφοριακής ταχύτητας',
+    'akk-sub2':'ετήσια βάση',
+    'sec-wc':'Κυκλοφοριακή Ταχύτητα σε Ημέρες',
+    'wc-inv-lbl':'Αποθέματα','wc-inv-sub':'€ δεσμευμένα',
+    'wc-rec-lbl':'Απαιτήσεις','wc-rec-sub':'€ δεσμευμένα',
+    'wc-pay-lbl':'Προμηθευτές','wc-pay-sub':'€ χρηματοδότηση',
+    'sec-sales-sc':'Σενάρια Πωλήσεων',
+    'sec-fin-sc':'Οικονομικά Αποτελέσματα Σεναρίων',
+    'th-scenario':'Σενάριο','th-sales':'Πωλήσεις','th-gp':'Μικτό Κέρδος',
+    'th-ebit':'EBIT','th-result':'Αποτέλεσμα','th-margin':'Περιθώριο %',
+    'sec-matrix':'Ανάλυση Ευαισθησίας: Πωλήσεις × Έξοδα',
+    'sec-exp-sc':'Σενάρια Εξόδων',
+    'eth-scenario':'Σενάριο','eth-expenses':'Έξοδα','eth-ebit':'EBIT',
+    'eth-result':'Αποτέλεσμα','eth-margin':'Περιθώριο %',
+    'footer-note':'Για κάθε επιχείρηση που θέλει λύσεις, όχι προβλήματα.',
+    'scenario_base':'Βάση','scenario_current':'Τρέχον',
+    'how-label':'Πώς λειτουργεί',
+    'how-t1':'Βάλε τα νούμερα της επιχείρησής σου',
+    'how-d1':'Χρησιμοποίησε τα sliders αριστερά για να βάλεις τις πωλήσεις σου, το περιθώριο κέρδους, τα έξοδα και πόσες μέρες χρειάζεσαι για να εισπράξεις ή να πληρώσεις.',
+    'how-t2':'Δες τα αποτελέσματα σε πραγματικό χρόνο',
+    'how-d2':'Κάθε φορά που αλλάζεις ένα νούμερο, το εργαλείο υπολογίζει αυτόματα το καθαρό αποτέλεσμα, τους τόκους, και πόσα κεφάλαια χρειάζεσαι για να λειτουργεί η επιχείρησή σου.',
+    'how-t3':'Δοκίμασε σενάρια & πάρε αποφάσεις',
+    'how-d3':'Τι γίνεται αν οι πωλήσεις πέσουν 10%; Τι αν μειώσεις τα έξοδα; Τα σενάρια σου δείχνουν όλες τις πιθανές εκβάσεις ώστε να αποφασίσεις με σιγουριά.',
+    'tip-result-title':'Καθαρό Αποτέλεσμα',
+    'tip-result-text':'Αυτό που μένει στην επιχείρηση στο τέλος — αφού πληρωθούν όλα τα έξοδα, οι τόκοι και αφαιρεθεί το κόστος των πωλήσεων. Αν είναι θετικό, η επιχείρηση βγάζει κέρδος.',
+    'tip-gp-title':'Μικτό Κέρδος',
+    'tip-gp-text':'Τα χρήματα που μένουν αφού αφαιρέσεις το κόστος των προϊόντων που πούλησες. Δεν έχει αφαιρεθεί ακόμα το ενοίκιο, οι μισθοί ή άλλα γενικά έξοδα.',
+    'tip-gp-formula':'Πωλήσεις × Μικτό Περιθώριο %',
+    'tip-ebit-title':'Λειτουργικό Αποτέλεσμα (EBIT)',
+    'tip-ebit-text':'Το κέρδος από την καθημερινή λειτουργία της επιχείρησης — αφού αφαιρεθούν τα λειτουργικά έξοδα (ενοίκια, μισθοί κλπ). Δεν περιλαμβάνει τόκους ή φόρους.',
+    'tip-ebit-formula':'Μικτό Κέρδος − Έξοδα + Λοιπά Έσοδα',
+    'tip-int-title':'Κόστος Τόκων',
+    'tip-int-text':'Αυτό πληρώνεις στην τράπεζα για να χρηματοδοτείς το κεφάλαιο κίνησης που χρειάζεσαι. Όσο περισσότερες μέρες αργείς να εισπράξεις, τόσο μεγαλύτεροι οι τόκοι.',
+    'tip-margin-title':'Περιθώριο Καθαρού Κέρδους',
+    'tip-margin-text':'Από κάθε 100€ που πουλάς, πόσα μένουν τελικά στην επιχείρηση. Π.χ. 8% σημαίνει ότι κρατάς 8€ από κάθε 100€ πωλήσεων.',
+    'tip-margin-formula':'Καθαρό Αποτέλεσμα ÷ Πωλήσεις × 100',
+    'tip-cogs-title':'Κόστος Πωληθέντων',
+    'tip-cogs-text':'Πόσο σε κοστίζει να παράγεις ή να αγοράσεις αυτά που πουλάς. Αν πουλάς προϊόντα, είναι το κόστος αγοράς τους. Αν πουλάς υπηρεσίες, είναι το άμεσο κόστος παροχής τους.',
+    'tip-cogs-formula':'Πωλήσεις × (1 − Μικτό Περιθώριο %)',
+    'tip-akk-title':'Αναγκαίο Κεφάλαιο Κίνησης',
+    'tip-akk-text':'Τα μετρητά που χρειάζεσαι για να "τρέχει" η επιχείρησή σου καθημερινά — να πληρώνεις προμηθευτές πριν εισπράξεις από πελάτες. Όσο μεγαλύτερο, τόσο περισσότερα χρήματα "κολλάνε" στην επιχείρηση.',
+    'tip-akk-formula':'(Ημ. Απαιτήσεων + Ημ. Αποθεμάτων − Ημ. Προμηθευτών) ÷ 365 × Πωλήσεις',
+    'tip-inv-title':'Ημέρες Αποθεμάτων',
+    'tip-inv-text':'Πόσες μέρες κρατάς κατά μέσο όρο τα προϊόντα στην αποθήκη πριν τα πουλήσεις. Λιγότερες μέρες = λιγότερα χρήματα κλειδωμένα σε απόθεμα.',
+    'tip-rec-title':'Ημέρες Απαιτήσεων',
+    'tip-rec-text':'Πόσες μέρες περιμένεις να πληρωθείς από τους πελάτες σου μετά την πώληση. Λιγότερες μέρες σημαίνει ότι εισπράττεις πιο γρήγορα και έχεις περισσότερη ρευστότητα.',
+    'tip-pay-title':'Ημέρες Προμηθευτών',
+    'tip-pay-text':'Πόσες μέρες αργείς να πληρώσεις τους προμηθευτές σου. Περισσότερες μέρες είναι καλό — σημαίνει ότι οι προμηθευτές χρηματοδοτούν εν μέρει την επιχείρησή σου.',
+    'lock1-title':'Ξεκλείδωσε την Πλήρη Ανάλυση',
+    'lock1-btn':'📩 Λάβε Δωρεάν Πρόσβαση',
+    'lock1-sub':'Το ΑΚΚ, η Κυκλοφοριακή Ταχύτητα, τα Σενάρια και η Ανάλυση Ευαισθησίας σε περιμένουν.',
+    'modal-badge':'ΔΩΡΕΑΝ ΠΡΟΣΒΑΣΗ',
+    'modal-h2':'Ξεκλείδωσε την Πλήρη Ανάλυση',
+    'modal-desc':'Βάλε το email σου και λάβε άμεσα πρόσβαση σε όλα τα δεδομένα της ανάλυσής σου.',
+    'ml1':'Κεφάλαιο Κίνησης (ΑΚΚ) — αναλυτικά',
+    'ml2':'Κυκλοφοριακή Ταχύτητα Αποθεμάτων, Απαιτήσεων & Προμηθευτών',
+    'ml3':'Πλήρη Σενάρια Πωλήσεων (±10%)',
+    'ml4':'Ανάλυση Ευαισθησίας Πωλήσεων × Εξόδων',
+    'ml5':'Σενάρια Εξόδων με αντίκτυπο στο αποτέλεσμα',
+    'modal-lbl-name':'Όνομα',
+    'modal-lbl-email':'Email',
+    'modal-lbl-company':'Εταιρεία (προαιρετικό)',
+    'modal-submit-btn':'Ξεκλείδωσε τώρα →',
+    'modal-note':'Δεν στέλνουμε spam. Τα δεδομένα σου παραμένουν ιδιωτικά.',
+    'success-h3':'Πρόσβαση Ενεργοποιήθηκε!',
+    'success-p':'Η πλήρης ανάλυση είναι τώρα διαθέσιμη. Ένα email επιβεβαίωσης στάλθηκε στη διεύθυνσή σου.',
+  },
+  en: {
+    'hero-badge':'SCENARIO ANALYSIS TOOL',
+    'hero-h1':'A.N.S.W.E.R. <span class="accent">—</span> Scenarios & Results',
+    'hero-sub':'Adaptive Network System for Working Capital, Excellence & Reporting',
+    'hero-tagline':'For every business that wants solutions, not problems.',
+    'sb-title':'Parameters',
+    'sb-wc-title':'Working Capital Velocity',
+    'lbl-sales':'Sales (€)',
+    'lbl-gm':'Gross Margin',
+    'lbl-exp':'Expenses (€)',
+    'lbl-ir':'Interest Rate',
+    'lbl-oi':'Other Income (€)',
+    'lbl-da':'Inventory Days',
+    'lbl-dr':'Receivable Days',
+    'lbl-dp':'Payable Days',
+    'btn-reset':'↺ Reset',
+    'sec-base':'Base Result',
+    'kl-result':'Net Result',
+    'kl-gp':'Gross Profit',
+    'kl-ebit':'EBIT',
+    'kl-interest':'Interest',
+    'kl-margin':'Profit Margin',
+    'kl-cogs':'COGS',
+    'akk-lbl':'Required Working Capital',
+    'akk-title':'Working Capital (NWC)',
+    'akk-sub':'Based on velocity days',
+    'akk-sub2':'annual basis',
+    'sec-wc':'Working Capital Velocity in Days',
+    'wc-inv-lbl':'Inventory','wc-inv-sub':'€ tied up',
+    'wc-rec-lbl':'Receivables','wc-rec-sub':'€ tied up',
+    'wc-pay-lbl':'Payables','wc-pay-sub':'€ financed',
+    'sec-sales-sc':'Sales Scenarios',
+    'sec-fin-sc':'Financial Results by Scenario',
+    'th-scenario':'Scenario','th-sales':'Sales','th-gp':'Gross Profit',
+    'th-ebit':'EBIT','th-result':'Result','th-margin':'Margin %',
+    'sec-matrix':'Sensitivity Analysis: Sales × Expenses',
+    'sec-exp-sc':'Expense Scenarios',
+    'eth-scenario':'Scenario','eth-expenses':'Expenses','eth-ebit':'EBIT',
+    'eth-result':'Result','eth-margin':'Margin %',
+    'footer-note':'For every business that wants solutions, not problems.',
+    'scenario_base':'Base','scenario_current':'Current',
+    'how-label':'How it works',
+    'how-t1':'Enter your business numbers',
+    'how-d1':'Use the sliders on the left to enter your sales, profit margin, expenses, and how many days it takes you to collect payments or pay suppliers.',
+    'how-t2':'See results in real time',
+    'how-d2':'Every time you change a number, the tool automatically calculates your net result, interest costs, and how much working capital your business needs to keep running.',
+    'how-t3':'Test scenarios & make decisions',
+    'how-d3':'What happens if sales drop 10%? What if you cut expenses? The scenarios show you all possible outcomes so you can decide with confidence.',
+    'tip-result-title':'Net Result',
+    'tip-result-text':'What remains in the business at the end — after all expenses, interest and cost of sales are deducted. If positive, the business is making a profit.',
+    'tip-gp-title':'Gross Profit',
+    'tip-gp-text':'The money left after deducting the cost of products sold. Rent, salaries and other general expenses have not yet been deducted.',
+    'tip-gp-formula':'Sales × Gross Margin %',
+    'tip-ebit-title':'Operating Result (EBIT)',
+    'tip-ebit-text':'Profit from the day-to-day operation of the business — after operating expenses (rent, salaries, etc.) are deducted. Does not include interest or taxes.',
+    'tip-ebit-formula':'Gross Profit − Expenses + Other Income',
+    'tip-int-title':'Interest Cost',
+    'tip-int-text':'What you pay the bank to finance the working capital you need. The more days it takes to collect payments, the higher the interest.',
+    'tip-margin-title':'Net Profit Margin',
+    'tip-margin-text':'For every €100 you sell, how much ultimately stays in the business. E.g. 8% means you keep €8 from every €100 in sales.',
+    'tip-margin-formula':'Net Result ÷ Sales × 100',
+    'tip-cogs-title':'Cost of Goods Sold',
+    'tip-cogs-text':'How much it costs you to produce or buy what you sell. For products, it is the purchase cost. For services, it is the direct cost of delivering them.',
+    'tip-cogs-formula':'Sales × (1 − Gross Margin %)',
+    'tip-akk-title':'Required Working Capital',
+    'tip-akk-text':'The cash you need to keep your business running daily — paying suppliers before collecting from customers. The larger it is, the more money is "stuck" in the business.',
+    'tip-akk-formula':'(Receivable Days + Inventory Days − Payable Days) ÷ 365 × Sales',
+    'tip-inv-title':'Inventory Days',
+    'tip-inv-text':'How many days on average you keep products in the warehouse before selling them. Fewer days = less money locked up in stock.',
+    'tip-rec-title':'Receivable Days',
+    'tip-rec-text':'How many days you wait to be paid by customers after a sale. Fewer days means you collect faster and have more liquidity.',
+    'tip-pay-title':'Payable Days',
+    'tip-pay-text':'How many days you take to pay your suppliers. More days is good — it means suppliers partly finance your business.',
+    'lock1-title':'Unlock Full Analysis',
+    'lock1-btn':'📩 Get Free Access',
+    'lock1-sub':'NWC, Working Capital Velocity, Scenarios and Sensitivity Analysis are waiting for you.',
+    'modal-badge':'FREE ACCESS',
+    'modal-h2':'Unlock Full Analysis',
+    'modal-desc':'Enter your email and get instant access to all the data in your analysis.',
+    'ml1':'Working Capital (NWC) — full breakdown',
+    'ml2':'Inventory, Receivables & Payables Velocity',
+    'ml3':'Full Sales Scenarios (±10%)',
+    'ml4':'Sales × Expenses Sensitivity Analysis',
+    'ml5':'Expense Scenarios with result impact',
+    'modal-lbl-name':'Name',
+    'modal-lbl-email':'Email',
+    'modal-lbl-company':'Company (optional)',
+    'modal-submit-btn':'Unlock now →',
+    'modal-note':'No spam. Your data stays private.',
+    'success-h3':'Access Activated!',
+    'success-p':'The full analysis is now available. A confirmation email has been sent to your address.',
+    'modal-note-privacy':'No spam. Your data stays private.',
+  }
+};
+let currentLang = 'gr';
+
+function setLang(l){
+  currentLang = l;
+  document.getElementById('btn-gr').classList.toggle('active', l==='gr');
+  document.getElementById('btn-en').classList.toggle('active', l==='en');
+  const t = LANG[l];
+  const skipPrefixes = ['kv-','akk-val','wc-inv-val','wc-rec-val','wc-pay-val','kd-'];
+  for(const [id, val] of Object.entries(t)){
+    const el = document.getElementById(id);
+    if(el && !skipPrefixes.some(p=>id.startsWith(p))){
+      el.innerHTML = val;
+    }
+  }
+  update();
+}
+
+// ═══════════════════════════════════════════════════════════
+// FORMATTING
+// ═══════════════════════════════════════════════════════════
+function fmtEur(v){
+  const abs = Math.abs(v);
+  if(abs >= 1000000) return (v/1000000).toFixed(2)+'M €';
+  if(abs >= 1000) return (v/1000).toFixed(1)+'K €';
+  return Math.round(v).toLocaleString('el-GR')+'€';
+}
+function fmtPct(v){ return (v>0?'+':'')+v.toFixed(1)+'%'; }
+function fmtEurFull(v){ return Math.round(v).toLocaleString('el-GR')+' €'; }
+
+// ═══════════════════════════════════════════════════════════
+// CORE CALCULATION
+// ═══════════════════════════════════════════════════════════
+function calc(sales, gm, expenses, ir, otherIncome){
+  const cogs = sales * (1 - gm/100);
+  const grossProfit = sales * (gm/100);
+  const ebit = grossProfit - expenses + otherIncome;
+  // Working capital = (days_recv + days_inv - days_pay) / 365 * sales
+  // Interest on working capital loan at given rate
+  const dA = +document.getElementById('sl-da').value;
+  const dR = +document.getElementById('sl-dr').value;
+  const dP = +document.getElementById('sl-dp').value;
+  const akkDays = dR + dA - dP;
+  const akk = (akkDays / 365) * sales;
+  const interest = akk * (ir/100);
+  const netResult = ebit - interest;
+  const margin = sales > 0 ? (netResult/sales)*100 : 0;
+  return {sales, cogs, grossProfit, ebit, interest, netResult, margin, akk, akkDays};
+}
+
+// ═══════════════════════════════════════════════════════════
+// MAIN UPDATE
+// ═══════════════════════════════════════════════════════════
+function update(){
+  const sales   = +document.getElementById('sl-sales').value;
+  const gm      = +document.getElementById('sl-gm').value;
+  const expenses= +document.getElementById('sl-exp').value;
+  const ir      = +document.getElementById('sl-ir').value;
+  const oi      = +document.getElementById('sl-oi').value;
+  const dA      = +document.getElementById('sl-da').value;
+  const dR      = +document.getElementById('sl-dr').value;
+  const dP      = +document.getElementById('sl-dp').value;
+
+  // Update slider display values
+  document.getElementById('val-sales').textContent = fmtEur(sales).replace(' €','').replace('€','');
+  document.getElementById('val-sales').textContent = sales >= 1000000
+    ? (sales/1000000).toFixed(2)+'M'
+    : sales >= 1000 ? (sales/1000).toFixed(0)+'K' : sales;
+  document.getElementById('val-gm').textContent = gm;
+  document.getElementById('val-exp').textContent = expenses >= 1000000
+    ? (expenses/1000000).toFixed(2)+'M'
+    : expenses >= 1000 ? (expenses/1000).toFixed(0)+'K' : expenses;
+  document.getElementById('val-ir').textContent = (+ir).toFixed(1);
+  document.getElementById('val-oi').textContent = oi >= 1000 ? (oi/1000).toFixed(0)+'K' : oi;
+  document.getElementById('val-da').textContent = dA;
+  document.getElementById('val-dr').textContent = dR;
+  document.getElementById('val-dp').textContent = dP;
+
+  const base = calc(sales, gm, expenses, ir, oi);
+
+  // KPIs
+  const resultEl = document.getElementById('kv-result');
+  resultEl.textContent = fmtEur(base.netResult);
+  resultEl.className = 'kpi-value ' + (base.netResult >= 0 ? 'positive' : 'negative');
+  document.getElementById('kd-result').textContent = fmtPct(base.margin);
+  document.getElementById('kd-result').className = 'kpi-delta ' + (base.margin >= 0 ? 'up' : 'down');
+  document.getElementById('kv-gp').textContent = fmtEur(base.grossProfit);
+  document.getElementById('kv-ebit').textContent = fmtEur(base.ebit);
+  document.getElementById('kv-interest').textContent = fmtEur(base.interest);
+  const marginEl = document.getElementById('kv-margin');
+  marginEl.textContent = base.margin.toFixed(1)+'%';
+  marginEl.className = 'kpi-value ' + (base.margin > 5 ? 'positive' : base.margin > 0 ? 'neutral' : 'negative');
+  document.getElementById('kv-cogs').textContent = fmtEur(base.cogs);
+
+  // AKK
+  document.getElementById('akk-val').textContent = fmtEur(base.akk);
+
+  // Working Capital Cards
+  const dailySales = sales / 365;
+  const invEur = dailySales * dA;
+  const recEur = dailySales * dR;
+  const payEur = dailySales * dP;
+  document.getElementById('wc-inv-val').textContent = dA + (currentLang==='gr'?' μέρ.':" days");
+  document.getElementById('wc-inv-sub').textContent = fmtEur(invEur) + (currentLang==='gr'?' δεσμευμένα':' tied up');
+  document.getElementById('wc-rec-val').textContent = dR + (currentLang==='gr'?' μέρ.':" days");
+  document.getElementById('wc-rec-sub').textContent = fmtEur(recEur) + (currentLang==='gr'?' δεσμευμένα':' tied up');
+  document.getElementById('wc-pay-val').textContent = dP + (currentLang==='gr'?' μέρ.':" days");
+  document.getElementById('wc-pay-sub').textContent = fmtEur(payEur) + (currentLang==='gr'?' χρηματοδότηση':' financed');
+
+  // WC bars (relative to 180-day max)
+  document.getElementById('wc-bar-inv').style.width = Math.min(100, (dA/180)*100)+'%';
+  document.getElementById('wc-bar-rec').style.width = Math.min(100, (dR/180)*100)+'%';
+  document.getElementById('wc-bar-pay').style.width = Math.min(100, (dP/120)*100)+'%';
+
+  // Sales Scenarios bar chart
+  buildSalesBars(sales, gm, expenses, ir, oi);
+
+  // Financial Scenarios Table
+  buildScenarioTable(sales, gm, expenses, ir, oi);
+
+  // Sensitivity Matrix
+  buildMatrix(sales, gm, expenses, ir, oi);
+
+  // Expense Scenarios
+  buildExpTable(sales, gm, expenses, ir, oi);
+}
+
+// ═══════════════════════════════════════════════════════════
+// PIN STATE
+// ═══════════════════════════════════════════════════════════
+let pinnedScenario = null;
+
+function pinScenario(pct, label, result, sales, margin){
+  if(pinnedScenario && pinnedScenario.pct === pct){ clearPin(); return; }
+  pinnedScenario = {pct, label, result, sales, margin};
+  document.querySelectorAll('.pin-btn').forEach(b => {
+    b.classList.remove('pinned');
+    b.textContent = 'PIN';
+  });
+  const btn = document.getElementById('pin-'+pct.toString().replace('.','_'));
+  if(btn){ btn.classList.add('pinned'); btn.textContent = '✓'; }
+  updateCompareBanner();
+}
+
+function clearPin(){
+  pinnedScenario = null;
+  document.querySelectorAll('.pin-btn').forEach(b => { b.classList.remove('pinned'); b.textContent = 'PIN'; });
+  document.getElementById('compare-banner').classList.remove('visible');
+}
+
+function updateCompareBanner(){
+  if(!pinnedScenario) return;
+  const sales = +document.getElementById('sl-sales').value;
+  const gm    = +document.getElementById('sl-gm').value;
+  const exp   = +document.getElementById('sl-exp').value;
+  const ir    = +document.getElementById('sl-ir').value;
+  const oi    = +document.getElementById('sl-oi').value;
+  const base  = calc(sales, gm, exp, ir, oi);
+  const diff  = pinnedScenario.result - base.netResult;
+  const banner = document.getElementById('compare-banner');
+  banner.classList.add('visible');
+  document.getElementById('cmp-pinned-scenario').textContent = pinnedScenario.label;
+  document.getElementById('cmp-pinned-result').textContent = fmtEur(pinnedScenario.result);
+  document.getElementById('cmp-pinned-result').className = 'compare-col-result ' + (pinnedScenario.result>=0?'positive':'negative');
+  document.getElementById('cmp-pinned-sales').textContent = fmtEur(pinnedScenario.sales);
+  document.getElementById('cmp-current-scenario').textContent = currentLang==='gr'?'Βάση':'Base';
+  document.getElementById('cmp-current-result').textContent = fmtEur(base.netResult);
+  document.getElementById('cmp-current-result').className = 'compare-col-result ' + (base.netResult>=0?'positive':'negative');
+  document.getElementById('cmp-current-sales').textContent = fmtEur(base.sales);
+  document.getElementById('cmp-diff-val').textContent = (diff>=0?'+':'')+fmtEur(diff);
+  document.getElementById('cmp-diff-val').className = 'compare-diff-val ' + (diff>=0?'up':'down');
+}
+
+// ═══════════════════════════════════════════════════════════
+// MAIN UPDATE
+// ═══════════════════════════════════════════════════════════
+function update(){
+  const sales   = +document.getElementById('sl-sales').value;
+  const gm      = +document.getElementById('sl-gm').value;
+  const expenses= +document.getElementById('sl-exp').value;
+  const ir      = +document.getElementById('sl-ir').value;
+  const oi      = +document.getElementById('sl-oi').value;
+  const dA      = +document.getElementById('sl-da').value;
+  const dR      = +document.getElementById('sl-dr').value;
+  const dP      = +document.getElementById('sl-dp').value;
+  const dz      = +document.getElementById('sl-dz').value;
+
+  // Slider display
+  document.getElementById('val-sales').textContent = sales>=1000000?(sales/1000000).toFixed(2)+'M':sales>=1000?(sales/1000).toFixed(0)+'K':sales;
+  document.getElementById('val-gm').textContent = gm;
+  document.getElementById('val-exp').textContent = expenses>=1000000?(expenses/1000000).toFixed(2)+'M':expenses>=1000?(expenses/1000).toFixed(0)+'K':expenses;
+  document.getElementById('val-ir').textContent = (+ir).toFixed(1);
+  document.getElementById('val-oi').textContent = oi>=1000?(oi/1000).toFixed(0)+'K':oi;
+  document.getElementById('val-da').textContent = dA;
+  document.getElementById('val-dr').textContent = dR;
+  document.getElementById('val-dp').textContent = dP;
+  document.getElementById('val-dz').textContent = (+dz).toFixed(1);
+
+  const base = calc(sales, gm, expenses, ir, oi);
+
+  // KPIs
+  const resultEl = document.getElementById('kv-result');
+  resultEl.textContent = fmtEur(base.netResult);
+  resultEl.className = 'kpi-value '+(base.netResult>=0?'positive':'negative');
+  document.getElementById('kd-result').textContent = fmtPct(base.margin);
+  document.getElementById('kd-result').className = 'kpi-delta '+(base.margin>=0?'up':'down');
+  document.getElementById('kv-gp').textContent = fmtEur(base.grossProfit);
+  document.getElementById('kv-ebit').textContent = fmtEur(base.ebit);
+  document.getElementById('kv-interest').textContent = fmtEur(base.interest);
+  const marginEl = document.getElementById('kv-margin');
+  marginEl.textContent = base.margin.toFixed(1)+'%';
+  marginEl.className = 'kpi-value '+(base.margin>5?'positive':base.margin>0?'neutral':'negative');
+  document.getElementById('kv-cogs').textContent = fmtEur(base.cogs);
+
+  // AKK
+  document.getElementById('akk-val').textContent = fmtEur(base.akk);
+
+  // WC cards
+  const dailySales = sales/365;
+  const invEur = dailySales*dA, recEur = dailySales*dR, payEur = dailySales*dP;
+  const gr = currentLang==='gr';
+  document.getElementById('wc-inv-val').textContent = dA+(gr?' μέρ.':" days");
+  document.getElementById('wc-inv-sub').textContent = fmtEur(invEur)+(gr?' δεσμευμένα':' tied up');
+  document.getElementById('wc-rec-val').textContent = dR+(gr?' μέρ.':" days");
+  document.getElementById('wc-rec-sub').textContent = fmtEur(recEur)+(gr?' δεσμευμένα':' tied up');
+  document.getElementById('wc-pay-val').textContent = dP+(gr?' μέρ.':" days");
+  document.getElementById('wc-pay-sub').textContent = fmtEur(payEur)+(gr?' χρηματοδότηση':' financed');
+  document.getElementById('wc-bar-inv').style.width = Math.min(100,(dA/180)*100)+'%';
+  document.getElementById('wc-bar-rec').style.width = Math.min(100,(dR/180)*100)+'%';
+  document.getElementById('wc-bar-pay').style.width = Math.min(100,(dP/120)*100)+'%';
+
+  // BREAK-EVEN
+  const gmFrac = gm/100;
+  const breakEven = gmFrac > 0 ? (expenses + base.interest - oi) / gmFrac : 0;
+  const beEl = document.getElementById('val-breakeven');
+  beEl.textContent = fmtEur(breakEven);
+  beEl.className = 'summary-card-val '+(breakEven > sales ? 'negative' : breakEven > sales*0.9 ? 'warn' : '');
+
+  // CASH FLOW estimate
+  const prevAkk = base.akk; // simplified: assume prior akk same
+  const cfEstimate = base.netResult; // net result approximation (no prior period delta)
+  const cfEl = document.getElementById('val-cashflow');
+  cfEl.textContent = fmtEur(cfEstimate);
+  cfEl.className = 'summary-card-val '+(cfEstimate<0?'negative':cfEstimate<base.akk*0.2?'warn':'');
+
+  // DANGER ZONE
+  const banner = document.getElementById('danger-banner');
+  const dangerText = document.getElementById('danger-text');
+  if(base.margin < dz){
+    banner.classList.add('visible');
+    dangerText.innerHTML = gr
+      ? `<strong>⚠ Danger Zone:</strong> Το τρέχον margin είναι <strong>${base.margin.toFixed(1)}%</strong> — κάτω από το όριο που έχεις ορίσει (${dz}%). Εξέτασε μείωση εξόδων ή αύξηση τιμών.`
+      : `<strong>⚠ Danger Zone:</strong> Current margin is <strong>${base.margin.toFixed(1)}%</strong> — below your threshold (${dz}%). Consider reducing expenses or raising prices.`;
+  } else {
+    banner.classList.remove('visible');
+  }
+
+  // SCENARIO CARDS
+  buildScenarioCards(sales, gm, expenses, ir, oi, base);
+
+  // TABLE + MATRIX + EXP
+  buildScenarioTable(sales, gm, expenses, ir, oi, base);
+  buildMatrix(sales, gm, expenses, ir, oi, base);
+  buildExpTable(sales, gm, expenses, ir, oi, base);
+
+  // Update comparison if pinned
+  if(pinnedScenario) updateCompareBanner();
+}
+
+// ═══════════════════════════════════════════════════════════
+// SCENARIO CARDS
+// ═══════════════════════════════════════════════════════════
+function buildScenarioCards(sales, gm, expenses, ir, oi, base){
+  const pcts = [10, 7.5, 5, 2.5, 0, -2.5, -5, -7.5, -10];
+  const gr = currentLang==='gr';
+  const baseLabel = gr?'Βάση':'Base';
+  let html = '';
+  for(const pct of pcts){
+    const s = sales*(1+pct/100);
+    const r = calc(s, gm, expenses, ir, oi);
+    const isBase = pct===0;
+    const vsDiff = base.netResult!==0 ? ((r.netResult-base.netResult)/Math.abs(base.netResult))*100 : 0;
+    const cardCls = isBase?'sc-base':r.netResult>=0?'sc-positive':'sc-negative';
+    const resCls = r.netResult>=0?'':'negative';
+    const vsSign = vsDiff>0?'+':vsDiff<0?'':' ';
+    const vsCls = isBase?'neutral':vsDiff>0?'up':'down';
+    const vsText = isBase?(gr?'Σενάριο Βάσης':'Base Scenario'):`${vsSign}${vsDiff.toFixed(1)}% vs ${baseLabel}`;
+    const label = isBase?baseLabel:(pct>0?'+':'')+pct+'%';
+    const pinId = 'pin-'+pct.toString().replace('.','_');
+    const isPinned = pinnedScenario && pinnedScenario.pct===pct;
+    const tipTitle = gr?`Σενάριο ${label}`:`Scenario ${label}`;
+    const tipText = gr
+      ? `Αν οι πωλήσεις ${pct>=0?'αυξηθούν κατά':'μειωθούν κατά'} ${Math.abs(pct)}%, το αποτέλεσμα γίνεται ${fmtEur(r.netResult)} με margin ${r.margin.toFixed(1)}%.`
+      : `If sales ${pct>=0?'increase':'decrease'} by ${Math.abs(pct)}%, the result becomes ${fmtEur(r.netResult)} with a ${r.margin.toFixed(1)}% margin.`;
+    html += `<div class="sc-card ${cardCls} has-tip">
+      <div class="sc-card-header">
+        <div class="sc-card-scenario">${label}</div>
+        <button class="pin-btn ${isPinned?'pinned':''}" id="${pinId}" onclick="pinScenario(${pct},'${label}',${r.netResult},${r.sales},${r.margin})">${isPinned?'✓':'PIN'}</button>
+      </div>
+      <div class="sc-result ${resCls}">${fmtEur(r.netResult)}</div>
+      <div class="sc-vs-base ${vsCls}">${vsText}</div>
+      <div class="sc-divider"></div>
+      <div class="sc-footer">
+        <div class="sc-footer-item">${gr?'Πωλήσεις':'Sales'}<span class="sc-footer-val">${fmtEur(r.sales)}</span></div>
+        <div class="sc-footer-item">Margin<span class="sc-footer-val" style="color:${r.margin>=0?'var(--green)':'var(--red)'}">${r.margin.toFixed(1)}%</span></div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-title">${tipTitle}</div>
+        <div class="tip-box-text">${tipText}</div>
+        <div class="tip-box-formula">EBIT: ${fmtEur(r.ebit)} | ${gr?'Τόκοι':'Interest'}: ${fmtEur(r.interest)}</div>
+      </div>
+    </div>`;
+  }
+  document.getElementById('sc-cards-grid').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════
+// FINANCIAL SCENARIOS TABLE
+// ═══════════════════════════════════════════════════════════
+function buildScenarioTable(sales, gm, expenses, ir, oi, base){
+  const rows = [
+    {label:'+10%', s:sales*1.10},
+    {label:'+7.5%', s:sales*1.075},
+    {label:'+5%', s:sales*1.05},
+    {label:'+2.5%', s:sales*1.025},
+    {label:currentLang==='gr'?'Βάση (0%)':'Base (0%)', s:sales, isCurrent:true},
+    {label:'-2.5%', s:sales*0.975},
+    {label:'-5%', s:sales*0.95},
+    {label:'-7.5%', s:sales*0.925},
+    {label:'-10%', s:sales*0.90},
+  ];
+  let html = '';
+  for(const row of rows){
+    const r = calc(row.s, gm, expenses, ir, oi);
+    const trCls = row.isCurrent?' class="row-current"':'';
+    const resultCls = r.netResult>=0?'positive':'negative';
+    const marginCls = r.margin>5?'positive':r.margin>0?'neutral-val':'negative';
+    html += `<tr${trCls}>
+      <td>${row.label}</td>
+      <td>${fmtEur(r.sales)}</td>
+      <td>${fmtEur(r.grossProfit)}</td>
+      <td>${fmtEur(r.ebit)}</td>
+      <td class="${resultCls}">${fmtEur(r.netResult)}</td>
+      <td class="${marginCls}">${r.margin.toFixed(1)}%</td>
+    </tr>`;
+  }
+  document.getElementById('scenario-tbody').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════
+// SENSITIVITY MATRIX 9x9
+// ═══════════════════════════════════════════════════════════
+function buildMatrix(sales, gm, expenses, ir, oi, base){
+  const pcts = [-10,-7.5,-5,-2.5,0,2.5,5,7.5,10];
+  const gr = currentLang==='gr';
+  const rowLabel = gr?'Πωλ. \\ Έξοδα':'Sales \\ Exp.';
+
+  let thead = `<tr><th style="text-align:left;font-size:10px">${rowLabel}</th>`;
+  for(const ep of pcts) thead += `<th>${ep>0?'+':''}${ep}%</th>`;
+  thead += '</tr>';
+  document.getElementById('matrix-thead').innerHTML = thead;
+
+  let tbody = '';
+  for(const sp of pcts){
+    const rowSales = sales*(1+sp/100);
+    const rowLabel = (sp>0?'+':'')+sp+'%';
+    const isBaseRow = sp===0;
+    tbody += `<tr${isBaseRow?' style="background:rgba(46,204,143,0.05)"':''}>
+      <td style="font-weight:700;color:${isBaseRow?'var(--green)':'var(--text)'}">${rowLabel}</td>`;
+    for(const ep of pcts){
+      const rowExp = expenses*(1+ep/100);
+      const r = calc(rowSales, gm, rowExp, ir, oi);
+      const isBaseCell = sp===0 && ep===0;
+      let cls = '';
+      if(isBaseCell) cls = 'cell-good';
+      else if(r.netResult < 0) cls = 'cell-bad';
+      else if(r.netResult > base.netResult*1.05) cls = 'cell-good';
+      else if(r.netResult < base.netResult*0.9) cls = 'cell-warn';
+      const isBaseCol = ep===0;
+      tbody += `<td class="${cls}"${isBaseCol?' style="border-left:1px solid var(--border2)"':''}>${fmtEur(r.netResult)}</td>`;
+    }
+    tbody += '</tr>';
+  }
+  document.getElementById('matrix-tbody').innerHTML = tbody;
+}
+
+// ═══════════════════════════════════════════════════════════
+// EXPENSE SCENARIOS TABLE (±10% ανά 2.5%)
+// ═══════════════════════════════════════════════════════════
+function buildExpTable(sales, gm, expenses, ir, oi, base){
+  const rows = [
+    {label:'+10%', e:expenses*1.10},
+    {label:'+7.5%', e:expenses*1.075},
+    {label:'+5%', e:expenses*1.05},
+    {label:'+2.5%', e:expenses*1.025},
+    {label:currentLang==='gr'?'Βάση':'Base', e:expenses, isCurrent:true},
+    {label:'-2.5%', e:expenses*0.975},
+    {label:'-5%', e:expenses*0.95},
+    {label:'-7.5%', e:expenses*0.925},
+    {label:'-10%', e:expenses*0.90},
+  ];
+  let html = '';
+  for(const row of rows){
+    const r = calc(sales, gm, row.e, ir, oi);
+    const trCls = row.isCurrent?' class="row-current"':'';
+    // Color based on direction vs base: lower expenses = better = green
+    const resultCls = r.netResult>=0?(r.netResult>base.netResult?'positive':'positive'):'negative';
+    const marginCls = r.margin>5?'positive':r.margin>0?'neutral-val':'negative';
+    html += `<tr${trCls}>
+      <td>${row.label}</td>
+      <td>${fmtEur(row.e)}</td>
+      <td>${fmtEur(r.ebit)}</td>
+      <td class="${resultCls}" style="color:${r.netResult<0?'var(--red)':r.netResult>base.netResult?'var(--green)':'var(--text2)'}">${fmtEur(r.netResult)}</td>
+      <td class="${marginCls}">${r.margin.toFixed(1)}%</td>
+    </tr>`;
+  }
+  document.getElementById('exp-scenario-tbody').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════
+// RESET
+// ═══════════════════════════════════════════════════════════
+function resetSliders(){
+  document.getElementById('sl-sales').value = 500000;
+  document.getElementById('sl-gm').value = 35;
+  document.getElementById('sl-exp').value = 120000;
+  document.getElementById('sl-ir').value = 5;
+  document.getElementById('sl-oi').value = 10000;
+  document.getElementById('sl-da').value = 45;
+  document.getElementById('sl-dr').value = 60;
+  document.getElementById('sl-dp').value = 30;
+  document.getElementById('sl-dz').value = 3;
+  clearPin();
+  update();
+}
+
+// ═══════════════════════════════════════════════════════════
+// GATE & MODAL
+// ═══════════════════════════════════════════════════════════
+const GATED_IDS = ['gate-akk','gate-wc','gate-sales','gate-fin','gate-matrix','gate-exp'];
+let isUnlocked = false;
+
+function openModal(){
+  document.getElementById('modal-bg').classList.add('open');
+  document.getElementById('modal-email').focus();
+}
+function closeModal(){
+  document.getElementById('modal-bg').classList.remove('open');
+}
+function handleBgClick(e){
+  if(e.target === document.getElementById('modal-bg')) closeModal();
+}
+function submitGate(){
+  const name  = document.getElementById('modal-name').value.trim();
+  const email = document.getElementById('modal-email').value.trim();
+  if(!email || !email.includes('@')){
+    document.getElementById('modal-email').style.borderColor='var(--red)';
+    setTimeout(()=>document.getElementById('modal-email').style.borderColor='',1500);
+    return;
+  }
+  // Show success
+  document.getElementById('modal-form-wrap').style.display='none';
+  document.getElementById('modal-success').style.display='block';
+  // Unlock after short delay
+  setTimeout(()=>{
+    unlockAll();
+    closeModal();
+    document.getElementById('modal-form-wrap').style.display='block';
+    document.getElementById('modal-success').style.display='none';
+  }, 1800);
+}
+function unlockAll(){
+  isUnlocked = true;
+  GATED_IDS.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.classList.add('unlocked');
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+update();
+</script>
+</body>
+</html>
