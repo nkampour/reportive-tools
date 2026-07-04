@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Λ.Υ.Σ.Ε.Ι.Σ.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c0a;--surface:#0f1510;--surface2:#141c15;
+  --border:#1e2b1f;--border2:#2a3d2b;
+  --green:#2ECC8F;--green-dim:#1a7a55;--green-glow:rgba(46,204,143,0.1);
+  --amber:#f5a623;--red:#e05252;
+  --text:#f0f4f0;--text2:#8fa890;--text3:#5a6e5c;
+  --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+  --w:1280px;--h:719px;
+}
+html,body{width:var(--w);height:var(--h);overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:12px}
+
+/* TOPBAR — slim */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:36px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{font-family:var(--font-head);font-size:13px;font-weight:800;color:var(--text)}
+.logo span{color:var(--green)}
+.logo-sub{font-size:11px;color:var(--text3);font-weight:600;margin-left:6px}
+.lang-toggle{display:flex;gap:2px;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:2px}
+.lang-btn{background:none;border:none;color:var(--text3);font-size:10px;font-family:var(--font-body);font-weight:600;padding:2px 7px;border-radius:4px;cursor:pointer;transition:all .15s}
+.lang-btn.active{background:var(--green);color:#080c0a}
+
+/* MAIN LAYOUT */
+.wrap{display:grid;grid-template-columns:186px 1fr;height:calc(var(--h) - 36px)}
+
+/* SIDEBAR */
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:10px 12px;overflow:hidden;display:flex;flex-direction:column;gap:0}
+.sb-section{font-family:var(--font-head);font-size:8px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:6px;margin-top:8px}
+.sb-section:first-child{margin-top:0}
+.sb-section.red{color:var(--red)}
+.slider-group{margin-bottom:6px}
+.slider-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px}
+.slider-label{font-size:10px;font-weight:500;color:var(--text2);line-height:1}
+.slider-val{font-family:var(--font-head);font-size:11px;font-weight:700;color:var(--green)}
+.slider-val.red{color:var(--red)}
+.slider-unit{font-size:9px;color:var(--text3)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--border2);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--green);border:2px solid var(--bg);cursor:pointer}
+.sl-dz input[type=range]::-webkit-slider-thumb{background:var(--red)}
+.slider-range{display:flex;justify-content:space-between}
+.slider-range span{font-size:8px;color:var(--text3)}
+.divider-sb{height:1px;background:var(--border);margin:6px 0}
+.reset-btn{width:100%;margin-top:8px;padding:5px;background:transparent;border:1px solid var(--border2);border-radius:5px;color:var(--text2);font-family:var(--font-body);font-size:10px;cursor:pointer;transition:all .2s}
+.reset-btn:hover{border-color:var(--green);color:var(--green)}
+
+/* CONTENT */
+.content{padding:10px 14px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+
+/* DANGER BANNER */
+.danger-banner{display:none;background:rgba(224,82,82,0.1);border:1px solid var(--red);border-radius:6px;padding:6px 10px;gap:8px;align-items:center;flex-shrink:0}
+.danger-banner.visible{display:flex}
+.danger-text{font-size:10px;color:#f08080;line-height:1.4}
+.danger-text strong{color:var(--red)}
+
+/* KPI GRID — 6 cards */
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;flex-shrink:0}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:8px 10px;position:relative;cursor:default}
+.kpi-card.hl{border-color:var(--green-dim);background:var(--green-glow)}
+.kpi-label{font-size:9px;color:var(--text3);font-weight:500;margin-bottom:2px;white-space:nowrap}
+.kpi-value{font-family:var(--font-head);font-size:15px;font-weight:800;color:var(--text);white-space:nowrap}
+.kpi-value.pos{color:var(--green)}
+.kpi-value.neg{color:var(--red)}
+.kpi-value.neu{color:var(--amber)}
+.kpi-delta{font-size:9px;font-weight:600;margin-top:1px}
+.kpi-delta.up{color:var(--green)}
+.kpi-delta.dn{color:var(--red)}
+
+/* SUMMARY ROW */
+.summary-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;flex-shrink:0}
+.s-card{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:8px 10px;position:relative;cursor:default}
+.s-label{font-size:9px;color:var(--text3);font-weight:500;margin-bottom:2px}
+.s-val{font-family:var(--font-head);font-size:15px;font-weight:800;color:var(--green)}
+.s-val.warn{color:var(--amber)}
+.s-val.neg{color:var(--red)}
+.s-sub{font-size:9px;color:var(--text3);margin-top:1px}
+
+/* WC SECTION */
+.wc-section{flex-shrink:0}
+.sec-label{font-family:var(--font-head);font-size:8px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:6px}
+.wc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.wc-card{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:8px 10px;position:relative;cursor:default}
+.wc-label{font-size:9px;color:var(--text3);font-weight:500;margin-bottom:2px}
+.wc-val{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--text)}
+.wc-sub{font-size:9px;color:var(--text3);margin-top:1px}
+.wc-bar-wrap{height:3px;background:var(--border);border-radius:2px;margin-top:5px}
+.wc-bar{height:3px;border-radius:2px;background:var(--green);transition:width .3s}
+
+/* TOOLTIPS */
+.has-tip{position:relative}
+.tip-box{visibility:hidden;opacity:0;position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%) translateY(-3px);background:#0f1f12;border:1px solid var(--green-dim);border-radius:7px;padding:8px 10px;width:190px;pointer-events:none;transition:opacity .15s,transform .15s;z-index:999}
+.has-tip:hover .tip-box{visibility:visible;opacity:1;transform:translateX(-50%) translateY(0)}
+.tip-box.tr{left:auto;right:0;transform:translateY(-3px)}
+.has-tip:hover .tip-box.tr{transform:translateY(0)}
+.tip-box.tl{left:0;transform:translateY(-3px)}
+.has-tip:hover .tip-box.tl{transform:translateY(0)}
+.tt{font-family:var(--font-head);font-size:10px;font-weight:700;color:var(--green);margin-bottom:3px}
+.tx{font-size:10px;color:var(--text2);line-height:1.4}
+.tf{font-size:9px;color:var(--text3);margin-top:4px;font-style:italic;border-top:1px solid var(--border);padding-top:3px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div><span class="logo">report<span>ive</span></span><span class="logo-sub" id="tool-name">Λ.Υ.Σ.Ε.Ι.Σ.</span></div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('gr')" id="btn-gr">ΕΛ</button>
+    <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-section" id="sb-p">Παράμετροι</div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-sales">Πωλήσεις (€)</span>
+        <span><span class="slider-val" id="val-sales">500K</span></span>
+      </div>
+      <input type="range" id="sl-sales" min="50000" max="5000000" step="50000" value="500000" oninput="update()">
+      <div class="slider-range"><span>50K</span><span>5M</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-gm">Μικτό Περιθώριο</span>
+        <span><span class="slider-val" id="val-gm">35</span><span class="slider-unit">%</span></span>
+      </div>
+      <input type="range" id="sl-gm" min="5" max="80" step="1" value="35" oninput="update()">
+      <div class="slider-range"><span>5%</span><span>80%</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-exp">Έξοδα (€)</span>
+        <span><span class="slider-val" id="val-exp">120K</span></span>
+      </div>
+      <input type="range" id="sl-exp" min="10000" max="2000000" step="10000" value="120000" oninput="update()">
+      <div class="slider-range"><span>10K</span><span>2M</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-ir">Επιτόκιο</span>
+        <span><span class="slider-val" id="val-ir">5.0</span><span class="slider-unit">%</span></span>
+      </div>
+      <input type="range" id="sl-ir" min="0" max="25" step="0.5" value="5" oninput="update()">
+      <div class="slider-range"><span>0%</span><span>25%</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-oi">Λοιπά Έσοδα (€)</span>
+        <span><span class="slider-val" id="val-oi">10K</span></span>
+      </div>
+      <input type="range" id="sl-oi" min="0" max="500000" step="5000" value="10000" oninput="update()">
+      <div class="slider-range"><span>0</span><span>500K</span></div>
+    </div>
+
+    <div class="divider-sb"></div>
+    <div class="sb-section" id="sb-wc">Κυκλοφοριακή Ταχύτητα</div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-da">Αποθέματα</span>
+        <span><span class="slider-val" id="val-da">45</span><span class="slider-unit" id="u1"> μέρ.</span></span>
+      </div>
+      <input type="range" id="sl-da" min="1" max="180" step="1" value="45" oninput="update()">
+      <div class="slider-range"><span>1</span><span>180</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-dr">Απαιτήσεις</span>
+        <span><span class="slider-val" id="val-dr">60</span><span class="slider-unit" id="u2"> μέρ.</span></span>
+      </div>
+      <input type="range" id="sl-dr" min="1" max="180" step="1" value="60" oninput="update()">
+      <div class="slider-range"><span>1</span><span>180</span></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-dp">Προμηθευτές</span>
+        <span><span class="slider-val" id="val-dp">30</span><span class="slider-unit" id="u3"> μέρ.</span></span>
+      </div>
+      <input type="range" id="sl-dp" min="1" max="120" step="1" value="30" oninput="update()">
+      <div class="slider-range"><span>1</span><span>120</span></div>
+    </div>
+
+    <div class="divider-sb"></div>
+    <div class="sb-section red" id="sb-dz">Danger Zone</div>
+
+    <div class="slider-group sl-dz">
+      <div class="slider-header">
+        <span class="slider-label" id="lbl-dz">Ελάχιστο Margin</span>
+        <span><span class="slider-val red" id="val-dz">3.0</span><span class="slider-unit">%</span></span>
+      </div>
+      <input type="range" id="sl-dz" min="0" max="20" step="0.5" value="3" oninput="update()" style="accent-color:var(--red)">
+      <div class="slider-range"><span>0%</span><span>20%</span></div>
+    </div>
+
+    <button class="reset-btn" onclick="resetAll()" id="btn-reset">↺ Επαναφορά</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- DANGER BANNER -->
+    <div class="danger-banner" id="danger-banner">
+      <span>⚠️</span>
+      <div class="danger-text" id="danger-text"></div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-grid">
+      <div class="kpi-card hl has-tip">
+        <div class="kpi-label" id="kl-res">Καθαρό Αποτέλεσμα</div>
+        <div class="kpi-value pos" id="kv-res">—</div>
+        <div class="kpi-delta up" id="kd-res"></div>
+        <div class="tip-box tl">
+          <div class="tt" id="tt-res">Καθαρό Αποτέλεσμα</div>
+          <div class="tx" id="tx-res">Αυτό που μένει στην επιχείρηση αφού πληρωθούν όλα τα έξοδα και οι τόκοι.</div>
+        </div>
+      </div>
+      <div class="kpi-card has-tip">
+        <div class="kpi-label" id="kl-gp">Μικτό Κέρδος</div>
+        <div class="kpi-value" id="kv-gp">—</div>
+        <div class="tip-box">
+          <div class="tt" id="tt-gp">Μικτό Κέρδος</div>
+          <div class="tx" id="tx-gp">Τα χρήματα που μένουν αφού αφαιρέσεις το κόστος πώλησης.</div>
+          <div class="tf" id="tf-gp">Πωλήσεις × Μικτό Περιθώριο %</div>
+        </div>
+      </div>
+      <div class="kpi-card has-tip">
+        <div class="kpi-label" id="kl-ebit">EBIT</div>
+        <div class="kpi-value" id="kv-ebit">—</div>
+        <div class="tip-box">
+          <div class="tt" id="tt-ebit">Λειτουργικό Αποτέλεσμα</div>
+          <div class="tx" id="tx-ebit">Κέρδος από καθημερινή λειτουργία. Δεν περιλαμβάνει τόκους.</div>
+          <div class="tf" id="tf-ebit">Μικτό Κέρδος − Έξοδα + Λοιπά Έσοδα</div>
+        </div>
+      </div>
+      <div class="kpi-card has-tip">
+        <div class="kpi-label" id="kl-int">Τόκοι</div>
+        <div class="kpi-value" id="kv-int">—</div>
+        <div class="tip-box">
+          <div class="tt" id="tt-int">Κόστος Τόκων</div>
+          <div class="tx" id="tx-int">Αυτό πληρώνεις για να χρηματοδοτείς το κεφάλαιο κίνησης.</div>
+        </div>
+      </div>
+      <div class="kpi-card has-tip">
+        <div class="kpi-label" id="kl-mgn">Περιθώριο %</div>
+        <div class="kpi-value" id="kv-mgn">—</div>
+        <div class="tip-box">
+          <div class="tt" id="tt-mgn">Καθαρό Περιθώριο</div>
+          <div class="tx" id="tx-mgn">Από κάθε 100€ πωλήσεων, πόσα μένουν τελικά στην επιχείρηση.</div>
+          <div class="tf" id="tf-mgn">Αποτέλεσμα ÷ Πωλήσεις × 100</div>
+        </div>
+      </div>
+      <div class="kpi-card has-tip">
+        <div class="kpi-label" id="kl-cogs">Κόστος Πωλ.</div>
+        <div class="kpi-value" id="kv-cogs">—</div>
+        <div class="tip-box tr">
+          <div class="tt" id="tt-cogs">Κόστος Πωληθέντων</div>
+          <div class="tx" id="tx-cogs">Πόσο κοστίζει να παράγεις ή να αγοράσεις αυτά που πουλάς.</div>
+          <div class="tf" id="tf-cogs">Πωλήσεις × (1 − Μικτό Περιθώριο %)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BREAK-EVEN + AKK -->
+    <div class="summary-row">
+      <div class="s-card has-tip">
+        <div class="s-label" id="lbl-be">Break-Even Πωλήσεις</div>
+        <div class="s-val" id="val-be">—</div>
+        <div class="s-sub" id="sub-be">ελάχιστος τζίρος για μηδενικό αποτέλεσμα</div>
+        <div class="tip-box tl">
+          <div class="tt" id="tt-be">Break-Even</div>
+          <div class="tx" id="tx-be">Ο ελάχιστος τζίρος που χρειάζεσαι για να μην χάνεις. Κάτω από αυτό λειτουργείς με ζημία.</div>
+          <div class="tf" id="tf-be">(Έξοδα + Τόκοι − Λοιπά Έσοδα) ÷ Μικτό Περιθώριο %</div>
+        </div>
+      </div>
+      <div class="s-card has-tip">
+        <div class="s-label" id="lbl-akk">Κεφάλαιο Κίνησης (ΑΚΚ)</div>
+        <div class="s-val" id="val-akk">—</div>
+        <div class="s-sub" id="sub-akk">ετήσια βάση</div>
+        <div class="tip-box tr">
+          <div class="tt" id="tt-akk">Αναγκαίο Κεφάλαιο Κίνησης</div>
+          <div class="tx" id="tx-akk">Τα μετρητά που χρειάζεσαι για να "τρέχει" η επιχείρησή σου — να πληρώνεις πριν εισπράξεις.</div>
+          <div class="tf" id="tf-akk">(Ημ. Απαιτ. + Ημ. Αποθ. − Ημ. Προμ.) ÷ 365 × Πωλήσεις</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WC VELOCITY -->
+    <div class="wc-section">
+      <div class="sec-label" id="sec-wc">Κυκλοφοριακή Ταχύτητα</div>
+      <div class="wc-grid">
+        <div class="wc-card has-tip">
+          <div class="wc-label" id="wc-inv-l">Αποθέματα</div>
+          <div class="wc-val" id="wc-inv-v">—</div>
+          <div class="wc-sub" id="wc-inv-s">—</div>
+          <div class="wc-bar-wrap"><div class="wc-bar" id="wc-bar-i"></div></div>
+          <div class="tip-box tl">
+            <div class="tt" id="tt-inv">Ημέρες Αποθεμάτων</div>
+            <div class="tx" id="tx-inv">Πόσες μέρες κρατάς τα προϊόντα στην αποθήκη. Λιγότερες = λιγότερα δεσμευμένα κεφάλαια.</div>
+          </div>
+        </div>
+        <div class="wc-card has-tip">
+          <div class="wc-label" id="wc-rec-l">Απαιτήσεις</div>
+          <div class="wc-val" id="wc-rec-v">—</div>
+          <div class="wc-sub" id="wc-rec-s">—</div>
+          <div class="wc-bar-wrap"><div class="wc-bar" id="wc-bar-r"></div></div>
+          <div class="tip-box">
+            <div class="tt" id="tt-rec">Ημέρες Απαιτήσεων</div>
+            <div class="tx" id="tx-rec">Πόσες μέρες περιμένεις να πληρωθείς. Λιγότερες = περισσότερη ρευστότητα.</div>
+          </div>
+        </div>
+        <div class="wc-card has-tip">
+          <div class="wc-label" id="wc-pay-l">Προμηθευτές</div>
+          <div class="wc-val" id="wc-pay-v">—</div>
+          <div class="wc-sub" id="wc-pay-s">—</div>
+          <div class="wc-bar-wrap"><div class="wc-bar" id="wc-bar-p" style="background:var(--amber)"></div></div>
+          <div class="tip-box tr">
+            <div class="tt" id="tt-pay">Ημέρες Προμηθευτών</div>
+            <div class="tx" id="tx-pay">Πόσες μέρες αργείς να πληρώσεις. Περισσότερες = καλύτερο, σε χρηματοδοτεί ο προμηθευτής.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const T={
+  gr:{
+    'tool-name':'Λ.Υ.Σ.Ε.Ι.Σ.','sb-p':'Παράμετροι','sb-wc':'Κυκλοφοριακή Ταχύτητα','sb-dz':'Danger Zone',
+    'lbl-sales':'Πωλήσεις (€)','lbl-gm':'Μικτό Περιθώριο','lbl-exp':'Έξοδα (€)','lbl-ir':'Επιτόκιο','lbl-oi':'Λοιπά Έσοδα (€)',
+    'lbl-da':'Αποθέματα','lbl-dr':'Απαιτήσεις','lbl-dp':'Προμηθευτές','lbl-dz':'Ελάχιστο Margin','btn-reset':'↺ Επαναφορά',
+    'kl-res':'Καθαρό Αποτέλεσμα','kl-gp':'Μικτό Κέρδος','kl-ebit':'EBIT','kl-int':'Τόκοι','kl-mgn':'Περιθώριο %','kl-cogs':'Κόστος Πωλ.',
+    'lbl-be':'Break-Even Πωλήσεις','sub-be':'ελάχιστος τζίρος για μηδενικό αποτέλεσμα',
+    'lbl-akk':'Κεφάλαιο Κίνησης (ΑΚΚ)','sub-akk':'ετήσια βάση',
+    'sec-wc':'Κυκλοφοριακή Ταχύτητα',
+    'wc-inv-l':'Αποθέματα','wc-rec-l':'Απαιτήσεις','wc-pay-l':'Προμηθευτές',
+    'tt-res':'Καθαρό Αποτέλεσμα','tx-res':'Αυτό που μένει στην επιχείρηση αφού πληρωθούν όλα τα έξοδα και οι τόκοι.',
+    'tt-gp':'Μικτό Κέρδος','tx-gp':'Τα χρήματα που μένουν αφού αφαιρέσεις το κόστος πώλησης.','tf-gp':'Πωλήσεις × Μικτό Περιθώριο %',
+    'tt-ebit':'Λειτουργικό Αποτέλεσμα','tx-ebit':'Κέρδος από καθημερινή λειτουργία. Δεν περιλαμβάνει τόκους.','tf-ebit':'Μικτό Κέρδος − Έξοδα + Λοιπά Έσοδα',
+    'tt-int':'Κόστος Τόκων','tx-int':'Αυτό πληρώνεις για να χρηματοδοτείς το κεφάλαιο κίνησης.',
+    'tt-mgn':'Καθαρό Περιθώριο','tx-mgn':'Από κάθε 100€ πωλήσεων, πόσα μένουν τελικά.','tf-mgn':'Αποτέλεσμα ÷ Πωλήσεις × 100',
+    'tt-cogs':'Κόστος Πωληθέντων','tx-cogs':'Πόσο κοστίζει να παράγεις ή να αγοράσεις αυτά που πουλάς.','tf-cogs':'Πωλήσεις × (1 − Μικτό Περιθώριο %)',
+    'tt-be':'Break-Even','tx-be':'Ο ελάχιστος τζίρος για να μην χάνεις. Κάτω από αυτό λειτουργείς με ζημία.','tf-be':'(Έξοδα + Τόκοι − Λοιπά Έσοδα) ÷ Μικτό Περιθώριο %',
+    'tt-akk':'Αναγκαίο Κεφάλαιο Κίνησης','tx-akk':'Τα μετρητά για να τρέχει η επιχείρησή σου καθημερινά.','tf-akk':'(Ημ. Απαιτ. + Ημ. Αποθ. − Ημ. Προμ.) ÷ 365 × Πωλήσεις',
+    'tt-inv':'Ημέρες Αποθεμάτων','tx-inv':'Πόσες μέρες κρατάς τα προϊόντα στην αποθήκη.',
+    'tt-rec':'Ημέρες Απαιτήσεων','tx-rec':'Πόσες μέρες περιμένεις να πληρωθείς.',
+    'tt-pay':'Ημέρες Προμηθευτών','tx-pay':'Πόσες μέρες αργείς να πληρώσεις. Περισσότερες = καλύτερο.',
+    'u1':' μέρ.','u2':' μέρ.','u3':' μέρ.',
+    'tied':'δεσμευμένα','financed':'χρηματοδότηση','days':' μέρ.',
+    'dz1':'<strong>⚠ Danger Zone:</strong> Το margin είναι','dz2':'— κάτω από το όριο σου','dz3':'Εξέτασε μείωση εξόδων ή αύξηση τιμών.'
+  },
+  en:{
+    'tool-name':'A.N.S.W.E.R.','sb-p':'Parameters','sb-wc':'Working Capital Velocity','sb-dz':'Danger Zone',
+    'lbl-sales':'Sales (€)','lbl-gm':'Gross Margin','lbl-exp':'Expenses (€)','lbl-ir':'Interest Rate','lbl-oi':'Other Income (€)',
+    'lbl-da':'Inventory','lbl-dr':'Receivables','lbl-dp':'Payables','lbl-dz':'Min. Margin','btn-reset':'↺ Reset',
+    'kl-res':'Net Result','kl-gp':'Gross Profit','kl-ebit':'EBIT','kl-int':'Interest','kl-mgn':'Margin %','kl-cogs':'COGS',
+    'lbl-be':'Break-Even Sales','sub-be':'minimum sales for zero result',
+    'lbl-akk':'Working Capital (NWC)','sub-akk':'annual basis',
+    'sec-wc':'Working Capital Velocity',
+    'wc-inv-l':'Inventory','wc-rec-l':'Receivables','wc-pay-l':'Payables',
+    'tt-res':'Net Result','tx-res':'What remains after all expenses and interest are paid.',
+    'tt-gp':'Gross Profit','tx-gp':'Money left after deducting cost of sales.','tf-gp':'Sales × Gross Margin %',
+    'tt-ebit':'Operating Result','tx-ebit':'Profit from operations. Does not include interest.','tf-ebit':'Gross Profit − Expenses + Other Income',
+    'tt-int':'Interest Cost','tx-int':'What you pay to finance your working capital.',
+    'tt-mgn':'Net Margin','tx-mgn':'For every €100 in sales, how much stays in the business.','tf-mgn':'Result ÷ Sales × 100',
+    'tt-cogs':'Cost of Goods Sold','tx-cogs':'How much it costs to produce or buy what you sell.','tf-cogs':'Sales × (1 − Gross Margin %)',
+    'tt-be':'Break-Even','tx-be':'Minimum sales to avoid losses.','tf-be':'(Expenses + Interest − Other Income) ÷ Gross Margin %',
+    'tt-akk':'Required Working Capital','tx-akk':'Cash needed to keep your business running daily.','tf-akk':'(Rec. Days + Inv. Days − Pay. Days) ÷ 365 × Sales',
+    'tt-inv':'Inventory Days','tx-inv':'How many days you keep products before selling.',
+    'tt-rec':'Receivable Days','tx-rec':'How many days until customers pay you.',
+    'tt-pay':'Payable Days','tx-pay':'How many days until you pay suppliers. More = better.',
+    'u1':' days','u2':' days','u3':' days',
+    'tied':'tied up','financed':'financed','days':' days',
+    'dz1':'<strong>⚠ Danger Zone:</strong> Margin is','dz2':'— below your threshold','dz3':'Consider reducing expenses or raising prices.'
+  }
+};
+let lang='gr';
+
+function setLang(l){
+  lang=l;
+  document.getElementById('btn-gr').classList.toggle('active',l==='gr');
+  document.getElementById('btn-en').classList.toggle('active',l==='en');
+  const t=T[l],skip=['val-','kv-','kd-','wc-inv-v','wc-inv-s','wc-rec-v','wc-rec-s','wc-pay-v','wc-pay-s'];
+  for(const[id,val]of Object.entries(t)){
+    const el=document.getElementById(id);
+    if(el&&!skip.some(s=>id.startsWith(s))&&typeof val==='string') el.innerHTML=val;
+  }
+  update();
+}
+
+function fmtE(v){const a=Math.abs(v);return a>=1000000?(v/1000000).toFixed(2)+'M €':a>=1000?(v/1000).toFixed(1)+'K €':Math.round(v).toLocaleString('el-GR')+'€'}
+function fmtSI(v){return v>=1000000?(v/1000000).toFixed(2)+'M':v>=1000?(v/1000).toFixed(0)+'K':v}
+function fmtP(v){return(v>0?'+':'')+v.toFixed(1)+'%'}
+
+function update(){
+  const sales=+document.getElementById('sl-sales').value;
+  const gm=+document.getElementById('sl-gm').value;
+  const exp=+document.getElementById('sl-exp').value;
+  const ir=+document.getElementById('sl-ir').value;
+  const oi=+document.getElementById('sl-oi').value;
+  const dA=+document.getElementById('sl-da').value;
+  const dR=+document.getElementById('sl-dr').value;
+  const dP=+document.getElementById('sl-dp').value;
+  const dz=+document.getElementById('sl-dz').value;
+  const t=T[lang];
+
+  document.getElementById('val-sales').textContent=fmtSI(sales);
+  document.getElementById('val-gm').textContent=gm;
+  document.getElementById('val-exp').textContent=fmtSI(exp);
+  document.getElementById('val-ir').textContent=(+ir).toFixed(1);
+  document.getElementById('val-oi').textContent=fmtSI(oi);
+  document.getElementById('val-da').textContent=dA;
+  document.getElementById('val-dr').textContent=dR;
+  document.getElementById('val-dp').textContent=dP;
+  document.getElementById('val-dz').textContent=(+dz).toFixed(1);
+
+  const cogs=sales*(1-gm/100),gp=sales*(gm/100),ebit=gp-exp+oi;
+  const akkDays=dR+dA-dP,akk=(akkDays/365)*sales,interest=akk*(ir/100);
+  const net=ebit-interest,margin=sales>0?(net/sales)*100:0;
+
+  const re=document.getElementById('kv-res');
+  re.textContent=fmtE(net);re.className='kpi-value '+(net>=0?'pos':'neg');
+  const de=document.getElementById('kd-res');
+  de.textContent=fmtP(margin);de.className='kpi-delta '+(margin>=0?'up':'dn');
+  document.getElementById('kv-gp').textContent=fmtE(gp);
+  document.getElementById('kv-ebit').textContent=fmtE(ebit);
+  document.getElementById('kv-int').textContent=fmtE(interest);
+  const me=document.getElementById('kv-mgn');
+  me.textContent=margin.toFixed(1)+'%';me.className='kpi-value '+(margin>5?'pos':margin>0?'neu':'neg');
+  document.getElementById('kv-cogs').textContent=fmtE(cogs);
+
+  const gmF=gm/100,be=gmF>0?(exp+interest-oi)/gmF:0;
+  const beEl=document.getElementById('val-be');
+  beEl.textContent=fmtE(be);beEl.className='s-val '+(be>sales?'neg':be>sales*0.85?'warn':'');
+  document.getElementById('val-akk').textContent=fmtE(akk);
+
+  const daily=sales/365,invE=daily*dA,recE=daily*dR,payE=daily*dP,d=t['days'];
+  document.getElementById('wc-inv-v').textContent=dA+d;
+  document.getElementById('wc-inv-s').textContent=fmtE(invE)+' '+t['tied'];
+  document.getElementById('wc-rec-v').textContent=dR+d;
+  document.getElementById('wc-rec-s').textContent=fmtE(recE)+' '+t['tied'];
+  document.getElementById('wc-pay-v').textContent=dP+d;
+  document.getElementById('wc-pay-s').textContent=fmtE(payE)+' '+t['financed'];
+  document.getElementById('wc-bar-i').style.width=Math.min(100,(dA/180)*100)+'%';
+  document.getElementById('wc-bar-r').style.width=Math.min(100,(dR/180)*100)+'%';
+  document.getElementById('wc-bar-p').style.width=Math.min(100,(dP/120)*100)+'%';
+
+  const db=document.getElementById('danger-banner');
+  if(margin<dz){
+    db.classList.add('visible');
+    document.getElementById('danger-text').innerHTML=`${t['dz1']} <strong>${margin.toFixed(1)}%</strong> ${t['dz2']} (${dz}%). ${t['dz3']}`;
+  } else db.classList.remove('visible');
+}
+
+function resetAll(){
+  ['sl-sales','sl-gm','sl-exp','sl-ir','sl-oi','sl-da','sl-dr','sl-dp','sl-dz'].forEach((id,i)=>{
+    document.getElementById(id).value=[500000,35,120000,5,10000,45,60,30,3][i];
+  });
+  update();
+}
+
+update();
+</script>
+</body>
+</html>
